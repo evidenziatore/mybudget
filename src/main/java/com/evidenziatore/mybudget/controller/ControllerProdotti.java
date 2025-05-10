@@ -6,14 +6,16 @@ import com.evidenziatore.mybudget.database.entity.Movimento;
 import com.evidenziatore.mybudget.database.entity.Prodotto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ControllerProdotti {
 
@@ -30,7 +32,7 @@ public class ControllerProdotti {
     private TableColumn<Prodotto, String> colPeso;
 
     @FXML
-    private TableColumn<Movimento, HBox> colAzioni;
+    private TableColumn<Prodotto, HBox> colAzioni;
 
     @FXML
     public void initialize() {
@@ -44,7 +46,21 @@ public class ControllerProdotti {
             buttonModifica.getStyleClass().add("buttonDefaultBlu");
             Button buttonElimina = new Button("Elimina");
             buttonElimina.getStyleClass().add("buttonAnnullaRosso");
-            //TODO azioni
+            buttonElimina.setOnAction(event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Conferma eliminazione");
+                alert.setHeaderText("Sei sicuro di voler eliminare il prodotto\n"+cellData.getValue().toString()+"?");
+                alert.setContentText("Questa azione non può essere annullata.");
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    Database.eliminaRecord("prodotto", cellData.getValue().getId());
+                    List<Prodotto> prodotti = Database.getAllProdotti();
+                    tableViewProdotti.getItems().setAll(prodotti);
+                }
+            });
+            //TODO modifica
             HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
             hBoxAzioni.setSpacing(5);
             return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);

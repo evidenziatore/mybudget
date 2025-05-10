@@ -34,4 +34,9 @@ public class Categoria {
     public void setImportanza(Importanza importanza) {
         this.importanza = importanza;
     }
+
+    @Override
+    public String toString() {
+        return (valore != null ? valore + " " : "") + (importanza != null ? importanza : "");
+    }
 }

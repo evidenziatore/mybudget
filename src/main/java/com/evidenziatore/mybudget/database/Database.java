@@ -277,4 +277,18 @@ public class Database {
         return provenienze;
     }
 
+    public static void eliminaRecord(String nomeTabella, int id) {
+        String sql = "DELETE FROM " + nomeTabella + " WHERE id = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

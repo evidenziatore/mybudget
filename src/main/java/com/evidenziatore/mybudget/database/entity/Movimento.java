@@ -2,6 +2,7 @@ package com.evidenziatore.mybudget.database.entity;
 
 import javafx.scene.layout.HBox;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Movimento {
@@ -12,7 +13,6 @@ public class Movimento {
     private Prodotto prodotto;
     private Date data;
     private int valutazione;
-    private HBox azioni;
 
     public Movimento(int id, Tipologia tipologia, Categoria categoria, Provenienza provenienza, Prodotto prodotto, Date data, int valutazione) {
         this.id = id;
@@ -80,11 +80,13 @@ public class Movimento {
         this.valutazione = valutazione;
     }
 
-    public HBox getAzioni() {
-        return azioni;
-    }
-
-    public void setAzioni(HBox azioni) {
-        this.azioni = azioni;
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return (prodotto != null ? prodotto + " " : "")
+                +(provenienza != null ? provenienza + " " : "")
+                +(tipologia != null ? tipologia + " " : "")
+                +(categoria != null ? categoria + " " : "")
+                +(data != null ? sdf.format(data) + " " : "");
     }
 }

@@ -12,16 +12,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ControllerMovimenti {
 
@@ -81,7 +82,21 @@ public class ControllerMovimenti {
                 buttonModifica.getStyleClass().add("buttonDefaultBlu");
                 Button buttonElimina = new Button("Elimina");
                 buttonElimina.getStyleClass().add("buttonAnnullaRosso");
-                //TODO azioni
+            buttonElimina.setOnAction(event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Conferma eliminazione");
+                alert.setHeaderText("Sei sicuro di voler eliminare il movimento\n"+cellData.getValue().toString()+"?");
+                alert.setContentText("Questa azione non può essere annullata.");
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    Database.eliminaRecord("movimento", cellData.getValue().getId());
+                    ObservableList<Movimento> movimentiList = FXCollections.observableArrayList(Database.getAllMovimentiCompletamente());
+                    tableViewMovimenti.setItems(movimentiList);
+                }
+            });
+            //TODO modifica
                 HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
                 hBoxAzioni.setSpacing(5);
                 return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);
@@ -100,7 +115,6 @@ public class ControllerMovimenti {
         tableViewMovimenti.setMaxWidth(totalWidth);
 
         ObservableList<Movimento> movimentiList = FXCollections.observableArrayList(Database.getAllMovimentiCompletamente());
-
         tableViewMovimenti.setItems(movimentiList);
 
     }

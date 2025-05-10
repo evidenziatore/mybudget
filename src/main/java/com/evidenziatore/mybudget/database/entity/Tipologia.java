@@ -26,4 +26,9 @@ public class Tipologia {
     public void setValore(String valore) {
         this.valore = valore;
     }
+
+    @Override
+    public String toString() {
+        return (valore != null ? valore + " " : "");
+    }
 }

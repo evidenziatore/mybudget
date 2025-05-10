@@ -36,4 +36,9 @@ public class Prodotto {
     public void setPeso(String peso) {
         this.peso = peso;
     }
+
+    @Override
+    public String toString() {
+        return (valore != null ? valore + " " : "")+ (peso != null ? peso + " " : "");
+    }
 }
