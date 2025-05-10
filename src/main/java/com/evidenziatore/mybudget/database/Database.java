@@ -107,6 +107,7 @@ public class Database {
                     provenienza_id INTEGER,
                     prodotto_id INTEGER,
                     data DATE NOT NULL,  -- Aggiunta della colonna 'data' di tipo DATE
+                    valutazione INTEGER,
                     FOREIGN KEY (tipologia_id) REFERENCES tipologia(id),
                     FOREIGN KEY (categoria_id) REFERENCES categoria(id),
                     FOREIGN KEY (provenienza_id) REFERENCES provenienza(id),
@@ -123,5 +124,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+
 
 }

@@ -1,0 +1,37 @@
+package com.evidenziatore.mybudget.database.entity;
+
+public class Categoria {
+    private int id;
+    private String valore;
+    private Importanza importanza;
+
+    public Categoria(int id, String valore, Importanza importanza) {
+        this.id = id;
+        this.valore = valore;
+        this.importanza = importanza;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getValore() {
+        return valore;
+    }
+
+    public void setValore(String valore) {
+        this.valore = valore;
+    }
+
+    public Importanza getImportanza() {
+        return importanza;
+    }
+
+    public void setImportanza(Importanza importanza) {
+        this.importanza = importanza;
+    }
+}
