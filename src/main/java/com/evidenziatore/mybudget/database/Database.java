@@ -99,7 +99,8 @@ public class Database {
                 String sqlProdotto = """
                 CREATE TABLE IF NOT EXISTS prodotto (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    valore TEXT NOT NULL
+                    valore TEXT NOT NULL,
+                    peso INTEGER
                 );
             """;
                 stmt.execute(sqlProdotto);
@@ -143,7 +144,7 @@ public class Database {
                 c.id AS categoria_id, c.valore AS categoria_valore,
                 i.id AS importanza_id, i.valore AS importanza_valore,
                 p.id AS provenienza_id, p.valore AS provenienza_valore,
-                pr.id AS prodotto_id, pr.valore AS prodotto_valore
+                pr.id AS prodotto_id, pr.valore AS prodotto_valore, pr.peso AS prodotto_peso
             FROM movimento m
             left JOIN tipologia t ON m.tipologia_id = t.id
             left JOIN categoria c ON m.categoria_id = c.id
@@ -181,7 +182,8 @@ public class Database {
 
                 Prodotto prodotto = new Prodotto(
                         rs.getInt("prodotto_id"),
-                        rs.getString("prodotto_valore")
+                        rs.getString("prodotto_valore"),
+                        rs.getString("prodotto_peso")
                 );
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -210,7 +212,7 @@ public class Database {
     public static List<Prodotto> getAllProdotti() {
         List<Prodotto> prodotti = new ArrayList<>();
 
-        String sql = "SELECT id, valore FROM prodotto";
+        String sql = "SELECT id, valore, peso FROM prodotto";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -218,7 +220,7 @@ public class Database {
 
             while (rs.next()) {
                 // Usa il costruttore con parametri
-                Prodotto prodotto = new Prodotto(rs.getInt("id"), rs.getString("valore"));
+                Prodotto prodotto = new Prodotto(rs.getInt("id"), rs.getString("valore"), rs.getString("peso"));
                 prodotti.add(prodotto);
             }
         } catch (SQLException e) {

@@ -30,6 +30,6 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <top>
-      <Label styleClass="labelGrandeGrossettoNera" text="Qui verranno rappresentati i dati di tutti i movimenti che sono stati effettuati" BorderPane.alignment="CENTER" />
+      <Label styleClass="labelGrandeGrossettoNera" text="Gestisci le tue entrate al meglio con MyBudget!" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>

@@ -6,10 +6,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Label?>
 <VBox spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.evidenziatore.mybudget.controller.ControllerCategorie">
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
+    <Label styleClass="labelPiccolaGrossettoNera" text="In questa sezione potrai gestire tutte le tue categorie (es. cibo) attraverso le apposite funzionalita'" />
 
     <TableView fx:id="tableViewCategorie">
         <columns>

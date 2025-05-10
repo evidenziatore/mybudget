@@ -27,6 +27,9 @@ public class ControllerProdotti {
     private TableColumn<Prodotto, String> colValore;
 
     @FXML
+    private TableColumn<Prodotto, String> colPeso;
+
+    @FXML
     private TableColumn<Movimento, HBox> colAzioni;
 
     @FXML
@@ -35,6 +38,7 @@ public class ControllerProdotti {
         colId.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getId())));
         colId.setVisible(false);
         colValore.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValore()));
+        colPeso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPeso()));
         colAzioni.setCellValueFactory(cellData -> {
             Button buttonModifica = new Button("Modifica");
             buttonModifica.getStyleClass().add("buttonDefaultBlu");
@@ -47,6 +51,7 @@ public class ControllerProdotti {
         });
         double totalWidth = colId.getPrefWidth()
                 + colValore.getPrefWidth()
+                + colPeso.getPrefWidth()
                 + colAzioni.getPrefWidth()
                 - 120;
 
