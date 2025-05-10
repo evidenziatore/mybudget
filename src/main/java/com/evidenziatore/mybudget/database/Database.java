@@ -291,4 +291,61 @@ public class Database {
         }
     }
 
+    public void inserisciRecord(String nomeTabella, String[] colonne, Object[] valori) {
+        StringBuilder sql = new StringBuilder("INSERT INTO " + nomeTabella + " (");
+        for (int i = 0; i < colonne.length; i++) {
+            sql.append(colonne[i]);
+            if (i < colonne.length - 1) {
+                sql.append(", ");
+            }
+        }
+        sql.append(") VALUES (");
+        for (int i = 0; i < valori.length; i++) {
+            sql.append("?");
+            if (i < valori.length - 1) {
+                sql.append(", ");
+            }
+        }
+        sql.append(");");
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < valori.length; i++) {
+                pstmt.setObject(i + 1, valori[i]);
+            }
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void aggiornaRecord(String nomeTabella, String[] colonne, Object[] valori, String condizione, Object[] valoriCondizione) {
+        StringBuilder sql = new StringBuilder("UPDATE " + nomeTabella + " SET ");
+        for (int i = 0; i < colonne.length; i++) {
+            sql.append(colonne[i]).append(" = ?");
+            if (i < colonne.length - 1) {
+                sql.append(", ");
+            }
+        }
+        sql.append(" WHERE ").append(condizione);
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            int index = 1;
+            for (Object valore : valori) {
+                pstmt.setObject(index++, valore);
+            }
+            for (Object valore : valoriCondizione) {
+                pstmt.setObject(index++, valore);
+            }
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

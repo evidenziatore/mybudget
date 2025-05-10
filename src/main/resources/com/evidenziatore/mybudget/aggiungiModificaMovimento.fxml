@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.evidenziatore.mybudget.controller.ControllerAggiungiModificaMovimenti">
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+   <Label styleClass="labelPiccolaGrossettoNera" text="In questa sezione potrai gestire tutti i tuoi movimenti bancari attraverso le apposite funzionalita'" />
+
+    <TableView fx:id="tableViewMovimenti" prefHeight="1000.0">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="140.0" text="ID" />
+            <TableColumn fx:id="colProdotto" prefWidth="140.0" text="Prodotto" />
+            <TableColumn fx:id="colData" prefWidth="140.0" text="Data" />
+            <TableColumn fx:id="colTipologia" prefWidth="140.0" text="Tipologia" />
+            <TableColumn fx:id="colCategoria" prefWidth="140.0" text="Categoria" />
+            <TableColumn fx:id="colProvenienza" prefWidth="140.0" text="Provenienza" />
+            <TableColumn fx:id="colImportanza" prefWidth="140.0" text="Importanza" />
+            <TableColumn fx:id="colAzioni" prefWidth="180.0" text="Azioni" />
+        </columns>
+    </TableView>
+    <Button mnemonicParsing="false" styleClass="buttonConfermaVerde" text="Aggiungi" />
+
+</VBox>

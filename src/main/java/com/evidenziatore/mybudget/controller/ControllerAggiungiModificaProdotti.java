@@ -1,0 +1,76 @@
+package com.evidenziatore.mybudget.controller;
+
+import com.evidenziatore.mybudget.database.Database;
+import com.evidenziatore.mybudget.database.entity.Prodotto;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+public class ControllerAggiungiModificaProdotti {
+
+    @FXML
+    private TableView<Prodotto> tableViewProdotti;
+
+    @FXML
+    private TableColumn<Prodotto, String> colId;
+
+    @FXML
+    private TableColumn<Prodotto, String> colValore;
+
+    @FXML
+    private TableColumn<Prodotto, String> colPeso;
+
+    @FXML
+    private TableColumn<Prodotto, HBox> colAzioni;
+
+    @FXML
+    public void initialize() {
+        // Imposta le colonne
+        colId.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getId())));
+        colId.setVisible(false);
+        colValore.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValore()));
+        colPeso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPeso()));
+        colAzioni.setCellValueFactory(cellData -> {
+            Button buttonModifica = new Button("Modifica");
+            buttonModifica.getStyleClass().add("buttonDefaultBlu");
+            Button buttonElimina = new Button("Elimina");
+            buttonElimina.getStyleClass().add("buttonAnnullaRosso");
+            buttonElimina.setOnAction(event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Conferma eliminazione");
+                alert.setHeaderText("Sei sicuro di voler eliminare il prodotto\n"+cellData.getValue().toString()+"?");
+                alert.setContentText("Questa azione non può essere annullata.");
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    Database.eliminaRecord("prodotto", cellData.getValue().getId());
+                    List<Prodotto> prodotti = Database.getAllProdotti();
+                    tableViewProdotti.getItems().setAll(prodotti);
+                }
+            });
+            //TODO modifica
+            HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
+            hBoxAzioni.setSpacing(5);
+            return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);
+        });
+        double totalWidth = colId.getPrefWidth()
+                + colValore.getPrefWidth()
+                + colPeso.getPrefWidth()
+                + colAzioni.getPrefWidth()
+                - 120;
+
+        tableViewProdotti.setMaxWidth(totalWidth);
+
+        // Carica i prodotti
+        List<Prodotto> prodotti = Database.getAllProdotti();
+        tableViewProdotti.getItems().setAll(prodotti);
+    }
+}
