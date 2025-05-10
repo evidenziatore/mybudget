@@ -1,5 +1,6 @@
 package com.evidenziatore.mybudget;
 
+import com.evidenziatore.mybudget.database.Database;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,27 +13,20 @@ import java.util.Objects;
 
 public class ApplicationMyBudget extends Application {
 
-    /**
-     * @param maschera Lo Stage che contiene la scena.
-     * @throws IOException Se il file FXML non può essere caricato correttamente.
-     */
     @Override
     public void start(Stage maschera) throws IOException {
-        FXMLLoader caricatoreFXML = new FXMLLoader(ApplicationMyBudget.class.getResource("viewNumeriPrimi.fxml"));
+        Database.initialize();
+        FXMLLoader caricatoreFXML = new FXMLLoader(ApplicationMyBudget.class.getResource("mybudget.fxml"));
         maschera.setScene(generaScena(caricatoreFXML));
-        maschera.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/image.png"))));
+        maschera.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+        maschera.setTitle("Welcome to MyBudget! - Gestisci le tue Finanze");
         maschera.show();
     }
 
-    /**
-     * @param caricatoreFXML Il FXMLLoader che carica il file FXML per la scena.
-     * @return La scena generata a partire dal file FXML caricato.
-     * @throws IOException Se il file FXML non può essere caricato correttamente.
-     */
     private Scene generaScena(FXMLLoader caricatoreFXML) throws IOException {
         double lunghezzaSchermo = Screen.getPrimary().getVisualBounds().getWidth();
         double altezzaSchermo = Screen.getPrimary().getVisualBounds().getHeight();
-        Scene scena = new Scene(caricatoreFXML.load(), lunghezzaSchermo / 3, altezzaSchermo / 3);
+        Scene scena = new Scene(caricatoreFXML.load(), lunghezzaSchermo/1.5, altezzaSchermo/1.5);
         scena.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
         return scena;
     }
