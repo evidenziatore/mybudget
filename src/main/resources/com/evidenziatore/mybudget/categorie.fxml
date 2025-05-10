@@ -15,7 +15,7 @@
     <TableView fx:id="tableViewCategorie">
         <columns>
             <TableColumn fx:id="colId" text="ID" />
-            <TableColumn fx:id="colValore" text="Valore" />
+            <TableColumn fx:id="colValore" text="Categoria" />
             <TableColumn fx:id="colImportanza" text="Importanza" />
             <TableColumn fx:id="colAzioni" text="Azioni" />
         </columns>

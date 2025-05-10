@@ -6,6 +6,7 @@ import com.evidenziatore.mybudget.database.entity.Categoria;
 import com.evidenziatore.mybudget.database.entity.Movimento;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.beans.property.SimpleStringProperty;
@@ -35,16 +36,18 @@ public class ControllerCategorie {
     public void initialize() {
         // Imposta le colonne
         colId.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getId())));
+        colId.setVisible(false);
         colValore.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValore()));
         colImportanza.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getImportanza().getValore()));
         colAzioni.setCellValueFactory(cellData -> {
-            try {
-                return new javafx.beans.property.SimpleObjectProperty<>(
-                        new FXMLLoader(ApplicationMyBudget.class.getResource("azioni.fxml")).load()
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            Button buttonModifica = new Button("Modifica");
+            buttonModifica.getStyleClass().add("buttonDefaultBlu");
+            Button buttonElimina = new Button("Elimina");
+            buttonElimina.getStyleClass().add("buttonAnnullaRosso");
+            //TODO azioni
+            HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
+            hBoxAzioni.setSpacing(5);
+            return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);
         });
 
         double totalWidth = colId.getPrefWidth()

@@ -51,6 +51,7 @@ public class ControllerMovimenti {
     @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colId.setVisible(false);
         colData.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getData().toString()));
         colTipologia.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTipologia().getValore()));
         colCategoria.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCategoria().getValore()));
@@ -58,13 +59,14 @@ public class ControllerMovimenti {
         colProvenienza.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getProvenienza().getValore()));
         colProdotto.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getProdotto().getValore()));
         colAzioni.setCellValueFactory(cellData -> {
-            try {
-                return new javafx.beans.property.SimpleObjectProperty<>(
-                        new FXMLLoader(ApplicationMyBudget.class.getResource("azioni.fxml")).load()
-                        );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+                Button buttonModifica = new Button("Modifica");
+                buttonModifica.getStyleClass().add("buttonDefaultBlu");
+                Button buttonElimina = new Button("Elimina");
+                buttonElimina.getStyleClass().add("buttonAnnullaRosso");
+                //TODO azioni
+                HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
+                hBoxAzioni.setSpacing(5);
+                return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);
         });
 
         double totalWidth = colId.getPrefWidth()

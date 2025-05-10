@@ -15,12 +15,12 @@
     <TableView fx:id="tableViewMovimenti">
         <columns>
             <TableColumn fx:id="colId" text="ID" />
+            <TableColumn fx:id="colProdotto" text="Prodotto" />
             <TableColumn fx:id="colData" text="Data" />
             <TableColumn fx:id="colTipologia" text="Tipologia" />
             <TableColumn fx:id="colCategoria" text="Categoria" />
-            <TableColumn fx:id="colImportanza" text="Importanza" />
             <TableColumn fx:id="colProvenienza" text="Provenienza" />
-            <TableColumn fx:id="colProdotto" text="Prodotto" />
+            <TableColumn fx:id="colImportanza" text="Importanza" />
             <TableColumn fx:id="colAzioni" text="Azioni" />
         </columns>
     </TableView>
