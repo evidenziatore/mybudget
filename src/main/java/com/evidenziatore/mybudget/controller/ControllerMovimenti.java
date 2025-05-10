@@ -3,6 +3,8 @@ package com.evidenziatore.mybudget.controller;
 import com.evidenziatore.mybudget.ApplicationMyBudget;
 import com.evidenziatore.mybudget.database.Database;
 import com.evidenziatore.mybudget.database.entity.Movimento;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +20,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ControllerMovimenti {
 
@@ -28,7 +32,7 @@ public class ControllerMovimenti {
     private TableColumn<Movimento, Integer> colId;
 
     @FXML
-    private TableColumn<Movimento, String> colData;
+    private TableColumn<Movimento, Date> colData;
 
     @FXML
     private TableColumn<Movimento, String> colTipologia;
@@ -52,12 +56,26 @@ public class ControllerMovimenti {
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colId.setVisible(false);
-        colData.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getData().toString()));
-        colTipologia.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTipologia().getValore()));
-        colCategoria.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCategoria().getValore()));
-        colImportanza.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCategoria().getImportanza().getValore()));
-        colProvenienza.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getProvenienza().getValore()));
-        colProdotto.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getProdotto().getValore()));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        colData.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getData()));
+
+        colData.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(Date item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
+        colTipologia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTipologia().getValore()));
+        colCategoria.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoria().getValore()));
+        colImportanza.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoria().getImportanza().getValore()));
+        colProvenienza.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProvenienza().getValore()));
+        colProdotto.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProdotto().getValore()));
         colAzioni.setCellValueFactory(cellData -> {
                 Button buttonModifica = new Button("Modifica");
                 buttonModifica.getStyleClass().add("buttonDefaultBlu");
@@ -77,7 +95,7 @@ public class ControllerMovimenti {
                 + colProvenienza.getPrefWidth()
                 + colProdotto.getPrefWidth()
                 + colAzioni.getPrefWidth()
-                + 20;
+                - 120;
 
         tableViewMovimenti.setMaxWidth(totalWidth);
 

@@ -48,7 +48,7 @@ public class ControllerProdotti {
         double totalWidth = colId.getPrefWidth()
                 + colValore.getPrefWidth()
                 + colAzioni.getPrefWidth()
-                + 20;
+                - 120;
 
         tableViewProdotti.setMaxWidth(totalWidth);
 

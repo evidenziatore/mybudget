@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
 <VBox spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.evidenziatore.mybudget.controller.ControllerProvenienze">
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -14,9 +15,9 @@
 
     <TableView fx:id="tableViewProvenienze">
         <columns>
-            <TableColumn fx:id="colId" text="ID"/>
-            <TableColumn fx:id="colValore" text="Provenienza"/>
-            <TableColumn fx:id="colAzioni" text="Azioni" />
+            <TableColumn fx:id="colId" prefWidth="140.0" text="ID" />
+            <TableColumn fx:id="colValore" prefWidth="140.0" text="Provenienza" />
+            <TableColumn fx:id="colAzioni" prefWidth="180.0" text="Azioni" />
         </columns>
     </TableView>
 </VBox>

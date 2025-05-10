@@ -54,7 +54,7 @@ public class ControllerCategorie {
                 + colValore.getPrefWidth()
                 + colImportanza.getPrefWidth()
                 + colAzioni.getPrefWidth()
-                + 20;
+                - 120;
 
         tableViewCategorie.setMaxWidth(totalWidth);
 

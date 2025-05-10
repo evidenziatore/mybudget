@@ -14,10 +14,10 @@
 
     <TableView fx:id="tableViewCategorie">
         <columns>
-            <TableColumn fx:id="colId" text="ID" />
-            <TableColumn fx:id="colValore" text="Categoria" />
-            <TableColumn fx:id="colImportanza" text="Importanza" />
-            <TableColumn fx:id="colAzioni" text="Azioni" />
+            <TableColumn fx:id="colId" prefWidth="140.0" text="ID" />
+            <TableColumn fx:id="colValore" prefWidth="140.0" text="Categoria" />
+            <TableColumn fx:id="colImportanza" prefWidth="140.0" text="Importanza" />
+            <TableColumn fx:id="colAzioni" prefWidth="180.0" text="Azioni" />
         </columns>
     </TableView>
 </VBox>

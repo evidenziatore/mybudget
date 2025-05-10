@@ -48,7 +48,7 @@ public class ControllerProvenienze {
         double totalWidth = colId.getPrefWidth()
                 + colValore.getPrefWidth()
                 + colAzioni.getPrefWidth()
-                + 20;
+                - 120;
 
         tableViewProvenienze.setMaxWidth(totalWidth);
 
