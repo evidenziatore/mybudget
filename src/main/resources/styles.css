@@ -2,7 +2,7 @@
 .root {
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: #E3F2FD;
 }
 /* FINE ROOT */
 
@@ -51,13 +51,13 @@
 
 /* INIZIO LABEL */
 .labelPiccolaGrossettoNera {
-    -fx-font-size: 14px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
 
 .labelGrandeGrossettoNera {
-    -fx-font-size: 18px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
@@ -66,7 +66,7 @@
 
 /* INIZIO TABLE */
 /*riga alternata azzurra o bianca e header blu*/
-.table-view {
+/*.table-view {
     -fx-background-color: #f0f0f0;
 }
 .table-view .column-header-background {
@@ -94,14 +94,12 @@
 .table-cell {
     -fx-border-color: transparent;
     -fx-alignment: CENTER;
-}
+}*/
 /* FINE TABLE */
 
-
-/* INIZIO PROGRESS BAR */
-/*avanti indietro blu*/
-.progress-bar .bar {
-    -fx-background-color: #00bfff;
-    -fx-background-radius: 10;
+/* INIZIO LIST*/
+.list-cell:selected {
+    -fx-background-color: #1565C0;
+    -fx-text-fill: white;
 }
-/* FINE PROGRESS BAR */
+/* FINE LIST*/

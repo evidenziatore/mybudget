@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainVbox" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.evidenziatore.mybudget.controller.ControllerMyBudget">
-    <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-    </padding>
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.evidenziatore.mybudget.controller.ControllerMyBudget">
+    <left>
+        <VBox style="-fx-background-color: #2196F3;">
+            <ListView fx:id="menuListView" prefWidth="150.0"
+                      style="-fx-background-color: #2196F3;
+                 -fx-control-inner-background: #2196F3;
+                 -fx-text-fill: white;
+                 -fx-font-size: 18px;">
+                <VBox.margin>
+               <Insets />
+            </VBox.margin></ListView>
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+        </VBox>
+    </left>
+
+    <!-- Area centrale dei contenuti -->
+    <center>
+        <VBox fx:id="contentArea" />
+    </center>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <top>
+      <Label styleClass="labelGrandeGrossettoNera" text="Qui verranno rappresentati tutti gli ultimi movimenti che sono stati effettuati" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>
