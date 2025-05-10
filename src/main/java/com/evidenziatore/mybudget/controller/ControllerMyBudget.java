@@ -1,5 +1,6 @@
 package com.evidenziatore.mybudget.controller;
 
+import com.evidenziatore.mybudget.database.Database;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
@@ -14,7 +15,7 @@ public class ControllerMyBudget implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle caricatoreRisorse) {
-
+        Database.getAllMovimentiCompletamente();
     }
 
 }

@@ -1,8 +1,12 @@
 package com.evidenziatore.mybudget.database;
 
+import com.evidenziatore.mybudget.database.entity.*;
+
 import java.io.File;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
@@ -125,6 +129,78 @@ public class Database {
         }
     }
 
+    public static List<Movimento> getAllMovimentiCompletamente() {
+        List<Movimento> movimenti = new ArrayList<>();
 
+        String sql = """
+            SELECT 
+                m.id AS movimento_id,
+                m.data,
+                m.valutazione,
+                t.id AS tipologia_id, t.valore AS tipologia_valore,
+                c.id AS categoria_id, c.valore AS categoria_valore,
+                i.id AS importanza_id, i.valore AS importanza_valore,
+                p.id AS provenienza_id, p.valore AS provenienza_valore,
+                pr.id AS prodotto_id, pr.valore AS prodotto_valore
+            FROM movimento m
+            INNER JOIN tipologia t ON m.tipologia_id = t.id
+            INNER JOIN categoria c ON m.categoria_id = c.id
+            INNER JOIN importanza i ON c.importanza_id = i.id
+            INNER JOIN provenienza p ON m.provenienza_id = p.id
+            INNER JOIN prodotto pr ON m.prodotto_id = pr.id
+            """;
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Costruisci gli oggetti figli
+                Tipologia tipologia = new Tipologia(
+                        rs.getInt("tipologia_id"),
+                        rs.getString("tipologia_valore")
+                );
+
+                Importanza importanza = new Importanza(
+                        rs.getInt("importanza_id"),
+                        rs.getString("importanza_valore")
+                );
+
+                Categoria categoria = new Categoria(
+                        rs.getInt("categoria_id"),
+                        rs.getString("categoria_valore"),
+                        importanza
+                );
+
+                Provenienza provenienza = new Provenienza(
+                        rs.getInt("provenienza_id"),
+                        rs.getString("provenienza_valore")
+                );
+
+                Prodotto prodotto = new Prodotto(
+                        rs.getInt("prodotto_id"),
+                        rs.getString("prodotto_valore")
+                );
+
+                // Ora crea il movimento completo
+                Movimento movimento = new Movimento(
+                        rs.getInt("movimento_id"),
+                        tipologia,
+                        categoria,
+                        provenienza,
+                        prodotto,
+                        rs.getDate("data"),
+                        rs.getInt("valutazione")
+                );
+
+                movimenti.add(movimento);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return movimenti;
+    }
 
 }
