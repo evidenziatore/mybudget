@@ -4,6 +4,8 @@ import com.evidenziatore.mybudget.database.entity.*;
 
 import java.io.File;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +112,7 @@ public class Database {
                     categoria_id INTEGER,
                     provenienza_id INTEGER,
                     prodotto_id INTEGER,
-                    data DATE NOT NULL,  -- Aggiunta della colonna 'data' di tipo DATE
+                    data TEXT NOT NULL,
                     valutazione INTEGER,
                     FOREIGN KEY (tipologia_id) REFERENCES tipologia(id),
                     FOREIGN KEY (categoria_id) REFERENCES categoria(id),
@@ -135,19 +137,19 @@ public class Database {
         String sql = """
             SELECT 
                 m.id AS movimento_id,
-                m.data,
-                m.valutazione,
+                m.data AS data,
+                m.valutazione as valutazione,
                 t.id AS tipologia_id, t.valore AS tipologia_valore,
                 c.id AS categoria_id, c.valore AS categoria_valore,
                 i.id AS importanza_id, i.valore AS importanza_valore,
                 p.id AS provenienza_id, p.valore AS provenienza_valore,
                 pr.id AS prodotto_id, pr.valore AS prodotto_valore
             FROM movimento m
-            INNER JOIN tipologia t ON m.tipologia_id = t.id
-            INNER JOIN categoria c ON m.categoria_id = c.id
-            INNER JOIN importanza i ON c.importanza_id = i.id
-            INNER JOIN provenienza p ON m.provenienza_id = p.id
-            INNER JOIN prodotto pr ON m.prodotto_id = pr.id
+            left JOIN tipologia t ON m.tipologia_id = t.id
+            left JOIN categoria c ON m.categoria_id = c.id
+            left JOIN importanza i ON c.importanza_id = i.id
+            left JOIN provenienza p ON m.provenienza_id = p.id
+            left JOIN prodotto pr ON m.prodotto_id = pr.id
             """;
 
         try (Connection conn = connect();
@@ -182,6 +184,8 @@ public class Database {
                         rs.getString("prodotto_valore")
                 );
 
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
                 // Ora crea il movimento completo
                 Movimento movimento = new Movimento(
                         rs.getInt("movimento_id"),
@@ -189,14 +193,14 @@ public class Database {
                         categoria,
                         provenienza,
                         prodotto,
-                        rs.getDate("data"),
+                        sdf.parse(rs.getString("data")),
                         rs.getInt("valutazione")
                 );
 
                 movimenti.add(movimento);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
 
@@ -229,7 +233,7 @@ public class Database {
 
         String sql = "SELECT c.id, c.valore, i.id AS id_importanza, i.valore AS valore_importanza " +
                 "FROM categoria c " +
-                "JOIN importanza i ON c.importanza_id = i.id";
+                "left JOIN importanza i ON c.importanza_id = i.id";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();

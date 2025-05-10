@@ -1,6 +1,8 @@
 package com.evidenziatore.mybudget.database.entity;
 
-import java.sql.Date;
+import javafx.scene.layout.HBox;
+
+import java.util.Date;
 
 public class Movimento {
     private int id;
@@ -10,6 +12,7 @@ public class Movimento {
     private Prodotto prodotto;
     private Date data;
     private int valutazione;
+    private HBox azioni;
 
     public Movimento(int id, Tipologia tipologia, Categoria categoria, Provenienza provenienza, Prodotto prodotto, Date data, int valutazione) {
         this.id = id;
@@ -75,5 +78,13 @@ public class Movimento {
 
     public void setValutazione(int valutazione) {
         this.valutazione = valutazione;
+    }
+
+    public HBox getAzioni() {
+        return azioni;
+    }
+
+    public void setAzioni(HBox azioni) {
+        this.azioni = azioni;
     }
 }
