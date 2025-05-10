@@ -9,7 +9,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.evidenziatore.mybudget.controller.ControllerMyBudget">
     <left>
         <VBox style="-fx-background-color: #2196F3;">
-            <ListView fx:id="menuListView" prefWidth="150.0" style="-fx-background-color: #2196F3;                  -fx-control-inner-background: #2196F3;                  -fx-text-fill: white;                  -fx-font-size: 18px;">
+            <ListView fx:id="menuListView" prefWidth="150.0" style="-fx-background-color: #2196F3; -fx-control-inner-background: #2196F3; -fx-text-fill: white; -fx-font-size: 18px;">
                 <VBox.margin>
                <Insets />
             </VBox.margin></ListView>

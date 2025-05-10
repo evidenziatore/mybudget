@@ -30,6 +30,8 @@ public class ControllerProvenienze {
                 + colValore.getPrefWidth()
                 + 20;
 
+        tableViewProvenienze.setMaxWidth(totalWidth);
+
         // Carica le provenienze
         List<Provenienza> provenienze = Database.getAllProvenienze();
         tableViewProvenienze.getItems().setAll(provenienze);
