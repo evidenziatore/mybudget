@@ -1,11 +1,16 @@
 package com.evidenziatore.mybudget.controller;
 
+import com.evidenziatore.mybudget.ApplicationMyBudget;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.collections.FXCollections;
+
+import java.io.IOException;
 
 public class ControllerMyBudget {
 
@@ -47,22 +52,46 @@ public class ControllerMyBudget {
     }
 
     private void showMovimenti() {
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(new Label("Schermata Movimenti"));
+        try {
+            FXMLLoader loader =  new FXMLLoader(ApplicationMyBudget.class.getResource("movimenti.fxml"));
+            Parent root = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showCategorie() {
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(new Label("Schermata Categorie"));
+        try {
+            FXMLLoader loader =  new FXMLLoader(ApplicationMyBudget.class.getResource("categorie.fxml"));
+            Parent root = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showProdotti() {
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(new Label("Schermata Prodotti"));
+        try {
+            FXMLLoader loader =  new FXMLLoader(ApplicationMyBudget.class.getResource("prodotti.fxml"));
+            Parent root = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showProvenienze() {
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(new Label("Schermata Provenienze"));
+        try {
+            FXMLLoader loader =  new FXMLLoader(ApplicationMyBudget.class.getResource("provenienze.fxml"));
+            Parent root = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

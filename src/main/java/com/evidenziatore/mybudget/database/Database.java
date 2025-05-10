@@ -203,4 +203,72 @@ public class Database {
         return movimenti;
     }
 
+    public static List<Prodotto> getAllProdotti() {
+        List<Prodotto> prodotti = new ArrayList<>();
+
+        String sql = "SELECT id, valore FROM prodotto";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Usa il costruttore con parametri
+                Prodotto prodotto = new Prodotto(rs.getInt("id"), rs.getString("valore"));
+                prodotti.add(prodotto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return prodotti;
+    }
+
+    public static List<Categoria> getAllCategorie() {
+        List<Categoria> categorie = new ArrayList<>();
+
+        String sql = "SELECT c.id, c.valore, i.id AS id_importanza, i.valore AS valore_importanza " +
+                "FROM categoria c " +
+                "JOIN importanza i ON c.importanza_id = i.id";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Crea l'oggetto Importanza
+                Importanza importanza = new Importanza(rs.getInt("id_importanza"), rs.getString("valore_importanza"));
+
+                // Usa il costruttore completo per Categoria
+                Categoria categoria = new Categoria(rs.getInt("id"), rs.getString("valore"), importanza);
+                categorie.add(categoria);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return categorie;
+    }
+
+    public static List<Provenienza> getAllProvenienze() {
+        List<Provenienza> provenienze = new ArrayList<>();
+
+        String sql = "SELECT id, valore FROM provenienza";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Usa il costruttore completo per Provenienza
+                Provenienza provenienza = new Provenienza(rs.getInt("id"), rs.getString("valore"));
+                provenienze.add(provenienza);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return provenienze;
+    }
+
 }
