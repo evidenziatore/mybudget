@@ -10,7 +10,7 @@
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
-    <Label styleClass="labelGrandeGrossettoNera" text="TODO aggiungi modifica movimento" />
+    <Label text="TODO aggiungi modifica movimento" />
     <HBox nodeOrientation="RIGHT_TO_LEFT">
         <Button fx:id="buttonConferma" mnemonicParsing="false" />
     </HBox>
