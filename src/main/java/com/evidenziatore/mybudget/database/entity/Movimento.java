@@ -6,15 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Movimento {
-    private int id;
+    private Integer id;
     private Tipologia tipologia;
     private Categoria categoria;
     private Provenienza provenienza;
     private Prodotto prodotto;
     private Date data;
-    private int valutazione;
+    private Integer valutazione;
 
-    public Movimento(int id, Tipologia tipologia, Categoria categoria, Provenienza provenienza, Prodotto prodotto, Date data, int valutazione) {
+    public Movimento(Integer id, Tipologia tipologia, Categoria categoria, Provenienza provenienza, Prodotto prodotto, Date data, Integer valutazione) {
         this.id = id;
         this.tipologia = tipologia;
         this.categoria = categoria;
@@ -24,11 +24,11 @@ public class Movimento {
         this.valutazione = valutazione;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -72,11 +72,11 @@ public class Movimento {
         this.data = data;
     }
 
-    public int getValutazione() {
+    public Integer getValutazione() {
         return valutazione;
     }
 
-    public void setValutazione(int valutazione) {
+    public void setValutazione(Integer valutazione) {
         this.valutazione = valutazione;
     }
 

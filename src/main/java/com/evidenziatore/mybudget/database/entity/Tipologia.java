@@ -1,21 +1,21 @@
 package com.evidenziatore.mybudget.database.entity;
 
 public class Tipologia {
-    private int id;
+    private Integer id;
     private String valore;
 
     // Costruttore
-    public Tipologia(int id, String valore) {
+    public Tipologia(Integer id, String valore) {
         this.id = id;
         this.valore = valore;
     }
 
     // Getter e Setter
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
