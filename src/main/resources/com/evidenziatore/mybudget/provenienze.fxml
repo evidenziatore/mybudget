@@ -20,6 +20,6 @@
             <TableColumn fx:id="colAzioni" prefWidth="180.0" text="Azioni" />
         </columns>
     </TableView>
-    <Button mnemonicParsing="false" styleClass="buttonConfermaVerde" text="Aggiungi" />
+    <Button fx:id="buttonAggiungi" mnemonicParsing="false" styleClass="buttonConfermaVerde" text="Aggiungi" />
 
 </VBox>

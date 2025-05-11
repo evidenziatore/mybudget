@@ -12,10 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -52,6 +54,9 @@ public class ControllerMovimenti {
 
     @FXML
     private TableColumn<Movimento, HBox> colAzioni;
+
+    @FXML
+    private Button buttonAggiungi;
 
     @FXML
     public void initialize() {
@@ -96,12 +101,42 @@ public class ControllerMovimenti {
                     tableViewMovimenti.setItems(movimentiList);
                 }
             });
-            //TODO modifica
+            buttonModifica.setOnAction(event -> {
+                FXMLLoader loader = new FXMLLoader(ApplicationMyBudget.class.getResource("aggiungiModificaMovimento.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                Stage stage = new Stage();
+                stage.setTitle("Modifica Movimento");
+                stage.setScene(new Scene(root));
+                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            });
                 HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
                 hBoxAzioni.setSpacing(5);
                 return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);
         });
+        buttonAggiungi.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(ApplicationMyBudget.class.getResource("aggiungiModificaMovimento.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
+            Stage stage = new Stage();
+            stage.setTitle("Aggiungi Movimento");
+            stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        });
         double totalWidth = colId.getPrefWidth()
                 + colData.getPrefWidth()
                 + colTipologia.getPrefWidth()

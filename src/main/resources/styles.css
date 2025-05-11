@@ -52,7 +52,7 @@
 /* INIZIO LABEL */
 .labelPiccolaGrossettoNera {
     -fx-font-size: 16px;
-    -fx-font-weight: regular;
+    -fx-font-weight: normal;
     -fx-text-fill: #333333;
 }
 

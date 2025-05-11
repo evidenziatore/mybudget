@@ -6,10 +6,13 @@ import com.evidenziatore.mybudget.database.entity.Movimento;
 import com.evidenziatore.mybudget.database.entity.Prodotto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,6 +36,9 @@ public class ControllerProdotti {
 
     @FXML
     private TableColumn<Prodotto, HBox> colAzioni;
+
+    @FXML
+    private Button buttonAggiungi;
 
     @FXML
     public void initialize() {
@@ -60,10 +66,41 @@ public class ControllerProdotti {
                     tableViewProdotti.getItems().setAll(prodotti);
                 }
             });
-            //TODO modifica
+            buttonModifica.setOnAction(event -> {
+                FXMLLoader loader = new FXMLLoader(ApplicationMyBudget.class.getResource("aggiungiModificaProdotto.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                Stage stage = new Stage();
+                stage.setTitle("Modifica Prodotto");
+                stage.setScene(new Scene(root));
+                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            });
             HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
             hBoxAzioni.setSpacing(5);
             return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);
+        });
+        buttonAggiungi.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(ApplicationMyBudget.class.getResource("aggiungiModificaProdotto.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            Stage stage = new Stage();
+            stage.setTitle("Aggiungi Prodotto");
+            stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         });
         double totalWidth = colId.getPrefWidth()
                 + colValore.getPrefWidth()
