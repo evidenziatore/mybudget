@@ -15,57 +15,14 @@ import java.util.Optional;
 
 public class ControllerAggiungiModificaProvenienze {
 
-    @FXML
-    private TableView<Provenienza> tableViewProvenienze;
+    Provenienza provenienza;
 
-    @FXML
-    private TableColumn<Provenienza, String> colId;
-
-    @FXML
-    private TableColumn<Provenienza, String> colValore;
-
-    @FXML
-    private TableColumn<Provenienza, HBox> colAzioni;
+    public void setProvenienza(Provenienza provenienza) {
+        this.provenienza = provenienza;
+    }
 
     @FXML
     public void initialize() {
-        // Imposta le colonne
-        colId.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getId())));
-        colId.setVisible(false);
-        colValore.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValore()));
-        colAzioni.setCellValueFactory(cellData -> {
-            Button buttonModifica = new Button("Modifica");
-            buttonModifica.getStyleClass().add("buttonDefaultBlu");
-            Button buttonElimina = new Button("Elimina");
-            buttonElimina.getStyleClass().add("buttonAnnullaRosso");
-            buttonElimina.setOnAction(event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Conferma eliminazione");
-                alert.setHeaderText("Sei sicuro di voler eliminare la provenienza\n"+cellData.getValue().toString()+"?");
-                alert.setContentText("Questa azione non può essere annullata.");
-                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    Database.eliminaRecord("provenienza", cellData.getValue().getId());
-                    List<Provenienza> provenienze = Database.getAllProvenienze();
-                    tableViewProvenienze.getItems().setAll(provenienze);
-                }
-            });
-            //TODO modifica
-            HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
-            hBoxAzioni.setSpacing(5);
-            return new javafx.beans.property.SimpleObjectProperty<>((HBox) hBoxAzioni);
-        });
-        double totalWidth = colId.getPrefWidth()
-                + colValore.getPrefWidth()
-                + colAzioni.getPrefWidth()
-                - 120;
 
-        tableViewProvenienze.setMaxWidth(totalWidth);
-
-        // Carica le provenienze
-        List<Provenienza> provenienze = Database.getAllProvenienze();
-        tableViewProvenienze.getItems().setAll(provenienze);
     }
 }

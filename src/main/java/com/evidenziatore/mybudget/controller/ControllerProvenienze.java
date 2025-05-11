@@ -71,6 +71,9 @@ public class ControllerProvenienze {
                     throw new RuntimeException(e);
                 }
 
+                ControllerAggiungiModificaProvenienze controller = loader.getController();
+                controller.setProvenienza(cellData.getValue());
+
                 Stage stage = new Stage();
                 stage.setTitle("Modifica Provenienza");
                 stage.setScene(new Scene(root));

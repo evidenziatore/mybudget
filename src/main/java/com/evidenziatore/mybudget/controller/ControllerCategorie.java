@@ -75,6 +75,9 @@ public class ControllerCategorie {
                     throw new RuntimeException(e);
                 }
 
+                ControllerAggiungiModificaCategorie controller = loader.getController();
+                controller.setCategoria(cellData.getValue());
+
                 Stage stage = new Stage();
                 stage.setTitle("Modifica Categoria");
                 stage.setScene(new Scene(root));

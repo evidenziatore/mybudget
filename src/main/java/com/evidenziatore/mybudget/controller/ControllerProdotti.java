@@ -75,6 +75,9 @@ public class ControllerProdotti {
                     throw new RuntimeException(e);
                 }
 
+                ControllerAggiungiModificaProdotti controller = loader.getController();
+                controller.setProdotto(cellData.getValue());
+
                 Stage stage = new Stage();
                 stage.setTitle("Modifica Prodotto");
                 stage.setScene(new Scene(root));

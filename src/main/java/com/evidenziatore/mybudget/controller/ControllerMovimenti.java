@@ -110,6 +110,9 @@ public class ControllerMovimenti {
                     throw new RuntimeException(e);
                 }
 
+                ControllerAggiungiModificaMovimenti controller = loader.getController();
+                controller.setMovimento(cellData.getValue());
+
                 Stage stage = new Stage();
                 stage.setTitle("Modifica Movimento");
                 stage.setScene(new Scene(root));
