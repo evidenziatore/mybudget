@@ -76,3 +76,30 @@
     -fx-text-fill: white;
 }
 /* FINE LIST*/
+
+/* INIZIO DROPDOWN*/
+.combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CCCCCC;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #0078d7;
+}
+
+.combo-box .button {
+    -fx-background-color: #FFFFFF;
+}
+
+.combo-box .list-cell:focused {
+    -fx-background-color: #FFFFFF;
+}
+
+.combo-box .list-view {
+    -fx-background-color: #FFFFFF;
+}
+
+.combo-box .list-cell:selected {
+    -fx-background-color: #FFFFFF;
+}
+/* FINE DROPDOWN*/

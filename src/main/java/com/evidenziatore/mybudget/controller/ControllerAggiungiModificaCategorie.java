@@ -26,8 +26,8 @@ public class ControllerAggiungiModificaCategorie {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
         buttonConferma.getStyleClass().removeLast();
-            buttonConferma.getStyleClass().add("buttonDefaultBlu");
-            buttonConferma.setText("Modifica");
+        buttonConferma.getStyleClass().add("buttonDefaultBlu");
+        buttonConferma.setText("Modifica");
     }
 
     @FXML

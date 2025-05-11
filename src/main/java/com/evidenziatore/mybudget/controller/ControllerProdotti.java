@@ -4,6 +4,7 @@ import com.evidenziatore.mybudget.ApplicationMyBudget;
 import com.evidenziatore.mybudget.database.Database;
 import com.evidenziatore.mybudget.database.entity.Movimento;
 import com.evidenziatore.mybudget.database.entity.Prodotto;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,7 +33,7 @@ public class ControllerProdotti {
     private TableColumn<Prodotto, String> colValore;
 
     @FXML
-    private TableColumn<Prodotto, String> colPeso;
+    private TableColumn<Prodotto, Integer> colPeso;
 
     @FXML
     private TableColumn<Prodotto, HBox> colAzioni;
@@ -46,7 +47,7 @@ public class ControllerProdotti {
         colId.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getId())));
         colId.setVisible(false);
         colValore.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValore()));
-        colPeso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPeso()));
+        colPeso.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPeso()));
         colAzioni.setCellValueFactory(cellData -> {
             Button buttonModifica = new Button("Modifica");
             buttonModifica.getStyleClass().add("buttonDefaultBlu");
@@ -60,6 +61,8 @@ public class ControllerProdotti {
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                 alert.getDialogPane().getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
                 stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+                okButton.getStyleClass().add("buttonAnnullaRosso");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     Database.eliminaRecord("prodotto", cellData.getValue().getId());

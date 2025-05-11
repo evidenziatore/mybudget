@@ -28,8 +28,8 @@ public class ControllerAggiungiModificaMovimenti {
     public void setMovimento(Movimento movimento) {
         this.movimento = movimento;
         buttonConferma.getStyleClass().removeLast();
-            buttonConferma.getStyleClass().add("buttonDefaultBlu");
-            buttonConferma.setText("Modifica");
+        buttonConferma.getStyleClass().add("buttonDefaultBlu");
+        buttonConferma.setText("Modifica");
     }
 
     @FXML

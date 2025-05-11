@@ -185,7 +185,7 @@ public class Database {
                 Prodotto prodotto = new Prodotto(
                         rs.getInt("prodotto_id"),
                         rs.getString("prodotto_valore"),
-                        rs.getString("prodotto_peso")
+                        rs.getInt("prodotto_peso")
                 );
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -223,7 +223,7 @@ public class Database {
 
             while (rs.next()) {
                 // Usa il costruttore con parametri
-                Prodotto prodotto = new Prodotto(rs.getInt("id"), rs.getString("valore"), rs.getString("peso"));
+                Prodotto prodotto = new Prodotto(rs.getInt("id"), rs.getString("valore"), rs.getInt("peso"));
                 prodotti.add(prodotto);
             }
         } catch (SQLException e) {

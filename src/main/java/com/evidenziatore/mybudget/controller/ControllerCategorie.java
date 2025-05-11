@@ -60,6 +60,8 @@ public class ControllerCategorie {
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                 alert.getDialogPane().getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
                 stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+                okButton.getStyleClass().add("buttonAnnullaRosso");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     Database.eliminaRecord("categoria", cellData.getValue().getId());

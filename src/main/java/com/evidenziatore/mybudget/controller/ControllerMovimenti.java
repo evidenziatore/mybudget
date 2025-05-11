@@ -57,7 +57,10 @@ public class ControllerMovimenti {
     private TableColumn<Movimento, Double> colValore;
 
     @FXML
-    private TableColumn<Movimento, Double> colValutazione;
+    private TableColumn<Movimento, Integer> colValutazione;
+
+    @FXML
+    private TableColumn<Movimento, Integer> colPeso;
 
     @FXML
     private TableColumn<Movimento, HBox> colAzioni;
@@ -85,7 +88,8 @@ public class ControllerMovimenti {
             }
         });
         colValore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getValore()));
-        colValutazione.setCellValueFactory(cellData -> new SimpleObjectProperty(cellData.getValue().getValutazione()));
+        colValutazione.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getValutazione()));
+        colPeso.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getProdotto().getPeso()));
         colTipologia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTipologia().getValore()));
         colCategoria.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoria().getValore()));
         colImportanza.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoria().getImportanza().getValore()));
@@ -104,6 +108,8 @@ public class ControllerMovimenti {
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                 alert.getDialogPane().getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
                 stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+                okButton.getStyleClass().add("buttonAnnullaRosso");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     Database.eliminaRecord("movimento", cellData.getValue().getId());
@@ -163,6 +169,7 @@ public class ControllerMovimenti {
                 + colImportanza.getPrefWidth()
                 + colProvenienza.getPrefWidth()
                 + colProdotto.getPrefWidth()
+                + colPeso.getPrefWidth()
                 + colAzioni.getPrefWidth()
                 - 120;
 

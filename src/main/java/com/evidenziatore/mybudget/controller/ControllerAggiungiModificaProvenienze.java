@@ -23,8 +23,8 @@ public class ControllerAggiungiModificaProvenienze {
     public void setProvenienza(Provenienza provenienza) {
         this.provenienza = provenienza;
         buttonConferma.getStyleClass().removeLast();
-            buttonConferma.getStyleClass().add("buttonDefaultBlu");
-            buttonConferma.setText("Modifica");
+        buttonConferma.getStyleClass().add("buttonDefaultBlu");
+        buttonConferma.setText("Modifica");
     }
 
     @FXML

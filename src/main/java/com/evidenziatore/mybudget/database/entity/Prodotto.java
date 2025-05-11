@@ -3,10 +3,10 @@ package com.evidenziatore.mybudget.database.entity;
 public class Prodotto {
     private Integer id;
     private String valore;
-    private String peso;
+    private Integer peso;
 
     // Costruttore
-    public Prodotto(Integer id, String valore, String peso) {
+    public Prodotto(Integer id, String valore, Integer peso) {
         this.id = id;
         this.valore = valore;
         this.peso = peso;
@@ -29,11 +29,11 @@ public class Prodotto {
         this.valore = valore;
     }
 
-    public String getPeso() {
+    public Integer getPeso() {
         return peso;
     }
 
-    public void setPeso(String peso) {
+    public void setPeso(Integer peso) {
         this.peso = peso;
     }
 
