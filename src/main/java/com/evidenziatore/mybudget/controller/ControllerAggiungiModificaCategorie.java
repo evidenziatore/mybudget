@@ -4,6 +4,8 @@ import com.evidenziatore.mybudget.database.Database;
 import com.evidenziatore.mybudget.database.entity.Categoria;
 import com.evidenziatore.mybudget.database.entity.Movimento;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -32,5 +34,8 @@ public class ControllerAggiungiModificaCategorie {
     public void initialize() {
         buttonConferma.getStyleClass().add("buttonConfermaVerde");
         buttonConferma.setText("Aggiungi");
+        buttonConferma.setOnAction(event -> {
+            //TODO azione
+        });
     }
 }

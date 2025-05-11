@@ -31,5 +31,8 @@ public class ControllerAggiungiModificaProdotti {
     public void initialize() {
         buttonConferma.getStyleClass().add("buttonConfermaVerde");
         buttonConferma.setText("Aggiungi");
+        buttonConferma.setOnAction(event -> {
+            //TODO azione
+        });
     }
 }
