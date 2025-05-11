@@ -115,6 +115,7 @@ public class Database {
                     prodotto_id INTEGER,
                     data TEXT NOT NULL,
                     valutazione INTEGER,
+                    valore REAL NOT NULL,
                     FOREIGN KEY (tipologia_id) REFERENCES tipologia(id),
                     FOREIGN KEY (categoria_id) REFERENCES categoria(id),
                     FOREIGN KEY (provenienza_id) REFERENCES provenienza(id),
@@ -140,6 +141,7 @@ public class Database {
                 m.id AS movimento_id,
                 m.data AS data,
                 m.valutazione as valutazione,
+                m.valore as valore,
                 t.id AS tipologia_id, t.valore AS tipologia_valore,
                 c.id AS categoria_id, c.valore AS categoria_valore,
                 i.id AS importanza_id, i.valore AS importanza_valore,
@@ -196,7 +198,8 @@ public class Database {
                         provenienza,
                         prodotto,
                         sdf.parse(rs.getString("data")),
-                        rs.getInt("valutazione")
+                        rs.getInt("valutazione"),
+                        rs.getDouble("valore")
                 );
 
                 movimenti.add(movimento);

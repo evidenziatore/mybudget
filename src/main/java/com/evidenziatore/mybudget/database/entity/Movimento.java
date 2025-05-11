@@ -13,8 +13,9 @@ public class Movimento {
     private Prodotto prodotto;
     private Date data;
     private Integer valutazione;
+    private Double valore;
 
-    public Movimento(Integer id, Tipologia tipologia, Categoria categoria, Provenienza provenienza, Prodotto prodotto, Date data, Integer valutazione) {
+    public Movimento(Integer id, Tipologia tipologia, Categoria categoria, Provenienza provenienza, Prodotto prodotto, Date data, Integer valutazione, Double valore) {
         this.id = id;
         this.tipologia = tipologia;
         this.categoria = categoria;
@@ -22,6 +23,7 @@ public class Movimento {
         this.prodotto = prodotto;
         this.data = data;
         this.valutazione = valutazione;
+        this.valore = valore;
     }
 
     public Integer getId() {
@@ -80,10 +82,20 @@ public class Movimento {
         this.valutazione = valutazione;
     }
 
+    public Double getValore() {
+        return valore;
+    }
+
+    public void setValore(Double valore) {
+        this.valore = valore;
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return (prodotto != null ? prodotto + " " : "")
+                +(valore != null ? valore + " " : "")
+                +(valutazione != null ? valutazione + " " : "")
                 +(provenienza != null ? provenienza + " " : "")
                 +(tipologia != null ? tipologia + " " : "")
                 +(categoria != null ? categoria + " " : "")

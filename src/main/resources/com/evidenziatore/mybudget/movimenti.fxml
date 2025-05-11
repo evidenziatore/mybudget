@@ -23,6 +23,8 @@
         <columns>
             <TableColumn fx:id="colId" prefWidth="140.0" text="ID" />
             <TableColumn fx:id="colProdotto" prefWidth="140.0" text="Prodotto" />
+            <TableColumn fx:id="colValore" prefWidth="140.0" text="Valore" />
+            <TableColumn fx:id="colValutazione" prefWidth="140.0" text="Valutazione" />
             <TableColumn fx:id="colData" prefWidth="140.0" text="Data" />
             <TableColumn fx:id="colTipologia" prefWidth="140.0" text="Tipologia" />
             <TableColumn fx:id="colCategoria" prefWidth="140.0" text="Categoria" />

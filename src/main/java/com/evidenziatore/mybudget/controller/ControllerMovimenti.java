@@ -3,6 +3,7 @@ package com.evidenziatore.mybudget.controller;
 import com.evidenziatore.mybudget.ApplicationMyBudget;
 import com.evidenziatore.mybudget.database.Database;
 import com.evidenziatore.mybudget.database.entity.Movimento;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -53,6 +54,12 @@ public class ControllerMovimenti {
     private TableColumn<Movimento, String> colProdotto;
 
     @FXML
+    private TableColumn<Movimento, Double> colValore;
+
+    @FXML
+    private TableColumn<Movimento, Double> colValutazione;
+
+    @FXML
     private TableColumn<Movimento, HBox> colAzioni;
 
     @FXML
@@ -77,6 +84,8 @@ public class ControllerMovimenti {
                 }
             }
         });
+        colValore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getValore()));
+        colValutazione.setCellValueFactory(cellData -> new SimpleObjectProperty(cellData.getValue().getValutazione()));
         colTipologia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTipologia().getValore()));
         colCategoria.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoria().getValore()));
         colImportanza.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoria().getImportanza().getValore()));
@@ -147,6 +156,8 @@ public class ControllerMovimenti {
         });
         double totalWidth = colId.getPrefWidth()
                 + colData.getPrefWidth()
+                + colValore.getPrefWidth()
+                + colValutazione.getPrefWidth()
                 + colTipologia.getPrefWidth()
                 + colCategoria.getPrefWidth()
                 + colImportanza.getPrefWidth()
