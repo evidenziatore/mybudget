@@ -20,14 +20,21 @@ import java.util.Optional;
 
 public class ControllerAggiungiModificaMovimenti {
 
+    @FXML
+    private Button buttonConferma;
+
     Movimento movimento;
 
     public void setMovimento(Movimento movimento) {
         this.movimento = movimento;
+        buttonConferma.getStyleClass().removeLast();
+            buttonConferma.getStyleClass().add("buttonDefaultBlu");
+            buttonConferma.setText("Modifica");
     }
 
     @FXML
     public void initialize() {
-
+        buttonConferma.getStyleClass().add("buttonConfermaVerde");
+        buttonConferma.setText("Aggiungi");
     }
 }

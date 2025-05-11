@@ -16,14 +16,21 @@ import java.util.Optional;
 
 public class ControllerAggiungiModificaCategorie {
 
+    @FXML
+    private Button buttonConferma;
+
     Categoria categoria;
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+        buttonConferma.getStyleClass().removeLast();
+            buttonConferma.getStyleClass().add("buttonDefaultBlu");
+            buttonConferma.setText("Modifica");
     }
 
     @FXML
     public void initialize() {
-
+        buttonConferma.getStyleClass().add("buttonConfermaVerde");
+        buttonConferma.setText("Aggiungi");
     }
 }

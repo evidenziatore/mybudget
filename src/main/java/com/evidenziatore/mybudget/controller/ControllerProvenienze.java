@@ -54,6 +54,7 @@ public class ControllerProvenienze {
                 alert.setHeaderText("Sei sicuro di voler eliminare la provenienza\n"+cellData.getValue().toString()+"?");
                 alert.setContentText("Questa azione non può essere annullata.");
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alert.getDialogPane().getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
                 stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -76,8 +77,10 @@ public class ControllerProvenienze {
 
                 Stage stage = new Stage();
                 stage.setTitle("Modifica Provenienza");
-                stage.setScene(new Scene(root));
                 stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+                stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
             });
@@ -96,8 +99,10 @@ public class ControllerProvenienze {
 
             Stage stage = new Stage();
             stage.setTitle("Aggiungi Provenienza");
-            stage.setScene(new Scene(root));
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img.png"))));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles.css")).toExternalForm());
+            stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         });

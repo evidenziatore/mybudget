@@ -15,14 +15,21 @@ import java.util.Optional;
 
 public class ControllerAggiungiModificaProdotti {
 
+    @FXML
+    private Button buttonConferma;
+
     Prodotto prodotto;
 
     public void setProdotto(Prodotto prodotto) {
         this.prodotto = prodotto;
+        buttonConferma.getStyleClass().removeLast();
+            buttonConferma.getStyleClass().add("buttonDefaultBlu");
+            buttonConferma.setText("Modifica");
     }
 
     @FXML
     public void initialize() {
-
+        buttonConferma.getStyleClass().add("buttonConfermaVerde");
+        buttonConferma.setText("Aggiungi");
     }
 }
