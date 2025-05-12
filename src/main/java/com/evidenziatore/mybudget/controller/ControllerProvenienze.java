@@ -85,6 +85,8 @@ public class ControllerProvenienze {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
+                List<Provenienza> provenienze = Database.getAllProvenienze();
+                tableViewProvenienze.getItems().setAll(provenienze);
             });
             HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
             hBoxAzioni.setSpacing(5);
@@ -107,6 +109,8 @@ public class ControllerProvenienze {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            List<Provenienza> provenienze = Database.getAllProvenienze();
+            tableViewProvenienze.getItems().setAll(provenienze);
         });
         double totalWidth = colId.getPrefWidth()
                 + colValore.getPrefWidth()

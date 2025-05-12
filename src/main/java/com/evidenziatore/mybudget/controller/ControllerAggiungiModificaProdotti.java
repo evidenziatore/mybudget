@@ -15,6 +15,9 @@ import java.util.Optional;
 
 public class ControllerAggiungiModificaProdotti {
 
+    public TextField textFieldProdotto;
+    public TextField textFieldPeso;
+    public Button buttonAnnulla;
     @FXML
     private Button buttonConferma;
 
@@ -25,14 +28,32 @@ public class ControllerAggiungiModificaProdotti {
         buttonConferma.getStyleClass().removeLast();
         buttonConferma.getStyleClass().add("buttonDefaultBlu");
         buttonConferma.setText("Modifica");
+        textFieldProdotto.setText(prodotto.getValore());
+        textFieldPeso.setText(prodotto.getPeso().toString());
     }
 
     @FXML
     public void initialize() {
         buttonConferma.getStyleClass().add("buttonConfermaVerde");
         buttonConferma.setText("Aggiungi");
+        textFieldPeso.setTextFormatter(new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
         buttonConferma.setOnAction(event -> {
-            //TODO azione
+            if (prodotto != null) {
+                Database.aggiornaRecord("prodotto", new String[]{"valore", "peso"},new String[]{textFieldProdotto.getText(), textFieldPeso.getText()}, prodotto.getId().toString());
+            } else {
+                Database.inserisciRecord("prodotto", new String[]{"valore", "peso"},new String[]{textFieldProdotto.getText(), textFieldPeso.getText()});
+            }
+            ((Stage) buttonConferma.getScene().getWindow()).close();
+        });
+        buttonAnnulla.setOnAction(event -> {
+            ((Stage) buttonConferma.getScene().getWindow()).close();
         });
     }
 }

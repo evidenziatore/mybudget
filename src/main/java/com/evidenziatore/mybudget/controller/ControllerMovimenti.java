@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -113,8 +114,8 @@ public class ControllerMovimenti {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     Database.eliminaRecord("movimento", cellData.getValue().getId());
-                    ObservableList<Movimento> movimentiList = FXCollections.observableArrayList(Database.getAllMovimentiCompletamente());
-                    tableViewMovimenti.setItems(movimentiList);
+                    List<Movimento> movimentiList = Database.getAllMovimentiCompletamente();
+                    tableViewMovimenti.getItems().setAll(movimentiList);
                 }
             });
             buttonModifica.setOnAction(event -> {
@@ -137,6 +138,8 @@ public class ControllerMovimenti {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
+                List<Movimento> movimentiList = Database.getAllMovimentiCompletamente();
+                tableViewMovimenti.getItems().setAll(movimentiList);
             });
                 HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
                 hBoxAzioni.setSpacing(5);
@@ -159,6 +162,8 @@ public class ControllerMovimenti {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            List<Movimento> movimentiList = Database.getAllMovimentiCompletamente();
+            tableViewMovimenti.getItems().setAll(movimentiList);
         });
         double totalWidth = colId.getPrefWidth()
                 + colData.getPrefWidth()

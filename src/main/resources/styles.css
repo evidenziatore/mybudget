@@ -91,15 +91,11 @@
     -fx-background-color: #FFFFFF;
 }
 
-.combo-box .list-cell:focused {
-    -fx-background-color: #FFFFFF;
-}
-
 .combo-box .list-view {
     -fx-background-color: #FFFFFF;
 }
 
 .combo-box .list-cell:selected {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #D3D3D3;
 }
 /* FINE DROPDOWN*/

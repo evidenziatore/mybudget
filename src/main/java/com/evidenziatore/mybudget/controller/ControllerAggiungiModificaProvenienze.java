@@ -15,6 +15,8 @@ import java.util.Optional;
 
 public class ControllerAggiungiModificaProvenienze {
 
+    public TextField textFieldProvenienza;
+    public Button buttonAnnulla;
     @FXML
     private Button buttonConferma;
 
@@ -25,6 +27,7 @@ public class ControllerAggiungiModificaProvenienze {
         buttonConferma.getStyleClass().removeLast();
         buttonConferma.getStyleClass().add("buttonDefaultBlu");
         buttonConferma.setText("Modifica");
+        textFieldProvenienza.setText(provenienza.getValore());
     }
 
     @FXML
@@ -32,7 +35,15 @@ public class ControllerAggiungiModificaProvenienze {
         buttonConferma.getStyleClass().add("buttonConfermaVerde");
         buttonConferma.setText("Aggiungi");
         buttonConferma.setOnAction(event -> {
-            //TODO azione
+            if (provenienza != null) {
+                Database.aggiornaRecord("provenienza", new String[]{"valore"},new String[]{textFieldProvenienza.getText()}, provenienza.getId().toString());
+            } else {
+                Database.inserisciRecord("provenienza", new String[]{"valore"},new String[]{textFieldProvenienza.getText()});
+            }
+            ((Stage) buttonConferma.getScene().getWindow()).close();
+        });
+        buttonAnnulla.setOnAction(event -> {
+            ((Stage) buttonConferma.getScene().getWindow()).close();
         });
     }
 }

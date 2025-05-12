@@ -25,25 +25,25 @@
                      <VBox>
                         <children>
                            <Label text="Prodotto" />
-                           <ComboBox minWidth="200.0" />
+                           <ComboBox fx:id="comboBoxProdotto" minWidth="200.0" />
                         </children>
                      </VBox>
                      <VBox>
                         <children>
                            <Label text="Tipologia" />
-                           <ComboBox minWidth="200.0" />
+                           <ComboBox fx:id="comboBoxTipologia" minWidth="200.0" />
                         </children>
                      </VBox>
                      <VBox>
                         <children>
                            <Label text="Categoria" />
-                           <ComboBox minWidth="200.0" />
+                           <ComboBox fx:id="comboBoxCategoria" minWidth="200.0" />
                         </children>
                      </VBox>
                      <VBox>
                         <children>
                            <Label text="Provenienza" />
-                           <ComboBox minWidth="200.0" />
+                           <ComboBox fx:id="comboBoxProvenienza" minWidth="200.0" />
                         </children>
                      </VBox>
                   </children>
@@ -56,19 +56,19 @@
                      <VBox>
                         <children>
                            <Label text="Data" />
-                           <DatePicker minWidth="200.0" />
+                           <DatePicker fx:id="datePickerData" minWidth="200.0" />
                         </children>
                      </VBox>
                      <VBox>
                         <children>
                            <Label text="Valutazione" />
-                           <TextField minWidth="200.0" />
+                           <TextField fx:id="textFieldValutazione" minWidth="200.0" />
                         </children>
                      </VBox>
                      <VBox>
                         <children>
                            <Label text="Valore" />
-                           <TextField minWidth="200.0" />
+                           <TextField fx:id="textFieldValore" minWidth="200.0" />
                         </children>
                      </VBox>
                   </children>
@@ -81,7 +81,7 @@
       </children>
    </HBox>
    <HBox nodeOrientation="RIGHT_TO_LEFT" spacing="5.0">
-      <Button mnemonicParsing="false" text="Annulla" />
+      <Button fx:id="buttonAnnulla" mnemonicParsing="false" text="Annulla" />
       <Button fx:id="buttonConferma" mnemonicParsing="false" />
    </HBox>
 </VBox>

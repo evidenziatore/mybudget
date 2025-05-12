@@ -89,6 +89,8 @@ public class ControllerCategorie {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
+                List<Categoria> categorie = Database.getAllCategorie();
+                tableViewCategorie.getItems().setAll(categorie);
             });
             HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
             hBoxAzioni.setSpacing(5);
@@ -111,6 +113,8 @@ public class ControllerCategorie {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+            List<Categoria> categorie = Database.getAllCategorie();
+            tableViewCategorie.getItems().setAll(categorie);
         });
         double totalWidth = colId.getPrefWidth()
                 + colValore.getPrefWidth()

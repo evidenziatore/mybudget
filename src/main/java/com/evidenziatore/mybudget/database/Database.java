@@ -6,7 +6,6 @@ import java.io.File;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -233,6 +232,48 @@ public class Database {
         return prodotti;
     }
 
+    public static List<Importanza> getAllImportanze() {
+        List<Importanza> importanze = new ArrayList<>();
+
+        String sql = "SELECT id, valore FROM importanza";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Usa il costruttore con parametri
+                Importanza importanza = new Importanza(rs.getInt("id"), rs.getString("valore"));
+                importanze.add(importanza);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return importanze;
+    }
+
+    public static List<Tipologia> getAllTipologie() {
+        List<Tipologia> tipologie = new ArrayList<>();
+
+        String sql = "SELECT id, valore FROM tipologia";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Usa il costruttore con parametri
+                Tipologia tipologia = new Tipologia(rs.getInt("id"), rs.getString("valore"));
+                tipologie.add(tipologia);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tipologie;
+    }
+
     public static List<Categoria> getAllCategorie() {
         List<Categoria> categorie = new ArrayList<>();
 
@@ -294,7 +335,7 @@ public class Database {
         }
     }
 
-    public void inserisciRecord(String nomeTabella, String[] colonne, Object[] valori) {
+    public static void inserisciRecord(String nomeTabella, String[] colonne, Object[] valori) {
         StringBuilder sql = new StringBuilder("INSERT INTO " + nomeTabella + " (");
         for (int i = 0; i < colonne.length; i++) {
             sql.append(colonne[i]);
@@ -324,7 +365,7 @@ public class Database {
         }
     }
 
-    public void aggiornaRecord(String nomeTabella, String[] colonne, Object[] valori, String condizione, Object[] valoriCondizione) {
+    public static void aggiornaRecord(String nomeTabella, String[] colonne, Object[] valori, String id) {
         StringBuilder sql = new StringBuilder("UPDATE " + nomeTabella + " SET ");
         for (int i = 0; i < colonne.length; i++) {
             sql.append(colonne[i]).append(" = ?");
@@ -332,16 +373,13 @@ public class Database {
                 sql.append(", ");
             }
         }
-        sql.append(" WHERE ").append(condizione);
+        sql.append(" WHERE ").append("id = " + id);
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
 
             int index = 1;
             for (Object valore : valori) {
-                pstmt.setObject(index++, valore);
-            }
-            for (Object valore : valoriCondizione) {
                 pstmt.setObject(index++, valore);
             }
             pstmt.executeUpdate();
