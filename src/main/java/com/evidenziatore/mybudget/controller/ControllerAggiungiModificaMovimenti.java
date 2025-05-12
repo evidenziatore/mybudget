@@ -80,7 +80,7 @@ public class ControllerAggiungiModificaMovimenti {
         comboBoxProdotto.setItems(FXCollections.observableArrayList(Database.getAllProdotti()));
         textFieldValore.setTextFormatter(new TextFormatter<>(change -> {
             String newText = change.getControlNewText();
-            if (newText.matches("\\d*(,\\d*)?")) {
+            if (newText.matches("\\d*(\\.\\d*)?")) {
                 return change;
             } else {
                 return null;

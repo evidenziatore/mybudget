@@ -67,7 +67,7 @@
                      </VBox>
                      <VBox>
                         <children>
-                           <Label text="Valore" />
+                           <Label text="Soldi" />
                            <TextField fx:id="textFieldValore" minWidth="200.0" />
                         </children>
                      </VBox>
