@@ -97,7 +97,7 @@
         <columns>
             <TableColumn fx:id="colId" prefWidth="140.0" text="ID" />
             <TableColumn fx:id="colProdotto" prefWidth="140.0" text="Prodotto" />
-            <TableColumn fx:id="colValore" prefWidth="140.0" text="Valore" />
+            <TableColumn fx:id="colValore" prefWidth="140.0" text="Soldi" />
             <TableColumn fx:id="colValutazione" prefWidth="140.0" text="Valutazione" />
             <TableColumn fx:id="colPeso" prefWidth="140.0" text="Peso" />
             <TableColumn fx:id="colData" prefWidth="140.0" text="Data" />
