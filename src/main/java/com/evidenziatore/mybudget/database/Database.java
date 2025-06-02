@@ -3,6 +3,9 @@ package com.evidenziatore.mybudget.database;
 import com.evidenziatore.mybudget.database.entity.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,112 +25,28 @@ public class Database {
     public static void initialize() {
         try {
             File folder = new File(DB_FOLDER);
-            if (!folder.exists()) {
-                boolean created = folder.mkdirs();
-                if (created) {
-                    System.out.println("Cartella database creata: " + DB_FOLDER);
-                } else {
-                    System.err.println("Errore nella creazione della cartella database.");
-                }
+            if (!folder.exists() && folder.mkdirs()) {
+                System.out.println("Cartella database creata: " + DB_FOLDER);
             }
 
-            try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
-                // Creazione della tabella tipologia
-                String sqlTipologia = """
-                CREATE TABLE IF NOT EXISTS tipologia (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    valore TEXT NOT NULL
-                );
-            """;
-                stmt.execute(sqlTipologia);
+            try (Connection conn = connect()) {
+                String sql = Files.readString(Path.of("src/main/resources/init.sql"));
+                try (Statement stmt = conn.createStatement()) {
+                    for (String statement : sql.split(";")) {
+                        String trimmed = statement.trim();
+                        if (!trimmed.isEmpty()) {
+                            stmt.execute(trimmed);
+                        }
+                    }
+                }
 
-                // Inserimento dei valori 'entrata' e 'uscita' nella tabella tipologia solo se non esistono
-                String insertEntrata = """
-                INSERT INTO tipologia (valore)
-                SELECT 'entrata' WHERE NOT EXISTS (SELECT 1 FROM tipologia WHERE valore = 'entrata');
-            """;
-                String insertUscita = """
-                INSERT INTO tipologia (valore)
-                SELECT 'uscita' WHERE NOT EXISTS (SELECT 1 FROM tipologia WHERE valore = 'uscita');
-            """;
-                stmt.executeUpdate(insertEntrata);
-                stmt.executeUpdate(insertUscita);
+                System.out.println("Database inizializzato da file: " + DB_PATH);
 
-                // Creazione della tabella importanza
-                String sqlImportanza = """
-                CREATE TABLE IF NOT EXISTS importanza (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    valore TEXT NOT NULL
-                );
-            """;
-                stmt.execute(sqlImportanza);
-
-                // Inserimento dei valori 'primaria' e 'secondaria' nella tabella importanza solo se non esistono
-                String insertPrimaria = """
-                INSERT INTO importanza (valore)
-                SELECT 'primaria' WHERE NOT EXISTS (SELECT 1 FROM importanza WHERE valore = 'primaria');
-            """;
-                String insertSecondaria = """
-                INSERT INTO importanza (valore)
-                SELECT 'secondaria' WHERE NOT EXISTS (SELECT 1 FROM importanza WHERE valore = 'secondaria');
-            """;
-                stmt.executeUpdate(insertPrimaria);
-                stmt.executeUpdate(insertSecondaria);
-
-                // Creazione della tabella categoria (con chiave esterna verso importanza)
-                String sqlCategoria = """
-                CREATE TABLE IF NOT EXISTS categoria (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    valore TEXT NOT NULL,
-                    importanza_id INTEGER,
-                    FOREIGN KEY (importanza_id) REFERENCES importanza(id)
-                );
-            """;
-                stmt.execute(sqlCategoria);
-
-                // Creazione della tabella provenienza
-                String sqlProvenienza = """
-                CREATE TABLE IF NOT EXISTS provenienza (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    valore TEXT NOT NULL
-                );
-            """;
-                stmt.execute(sqlProvenienza);
-
-                // Creazione della tabella prodotto
-                String sqlProdotto = """
-                CREATE TABLE IF NOT EXISTS prodotto (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    valore TEXT NOT NULL,
-                    peso INTEGER
-                );
-            """;
-                stmt.execute(sqlProdotto);
-
-                // Creazione della tabella movimento (con la colonna data di tipo DATE)
-                String sqlMovimento = """
-                CREATE TABLE IF NOT EXISTS movimento (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    tipologia_id INTEGER,
-                    categoria_id INTEGER,
-                    provenienza_id INTEGER,
-                    prodotto_id INTEGER,
-                    data TEXT NOT NULL,
-                    valutazione INTEGER,
-                    valore REAL NOT NULL,
-                    FOREIGN KEY (tipologia_id) REFERENCES tipologia(id),
-                    FOREIGN KEY (categoria_id) REFERENCES categoria(id),
-                    FOREIGN KEY (provenienza_id) REFERENCES provenienza(id),
-                    FOREIGN KEY (prodotto_id) REFERENCES prodotto(id)
-                );
-            """;
-                stmt.execute(sqlMovimento);
-
-                System.out.println("Database pronto: " + DB_PATH);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         } catch (SQLException e) {
-            System.err.println("Errore di inizializzazione database:");
             e.printStackTrace();
         }
     }
@@ -139,40 +58,41 @@ public class Database {
             SELECT 
                 m.id AS movimento_id,
                 m.data AS data,
-                m.valutazione as valutazione,
-                m.valore as valore,
-                t.id AS tipologia_id, t.valore AS tipologia_valore,
-                c.id AS categoria_id, c.valore AS categoria_valore,
-                i.id AS importanza_id, i.valore AS importanza_valore,
+                m.valutazione AS valutazione,
+                m.valore AS valore,
+                t.id AS tipo_movimento_id, t.valore AS tipo_movimento_valore,
+                c.id AS categoria_movimento_id, c.valore AS categoria_movimento_valore,
+                i.id AS livello_importanza_id, i.valore AS livello_importanza_valore,
                 p.id AS provenienza_id, p.valore AS provenienza_valore,
                 pr.id AS prodotto_id, pr.valore AS prodotto_valore, pr.peso AS prodotto_peso
-            FROM movimento m
-            left JOIN tipologia t ON m.tipologia_id = t.id
-            left JOIN categoria c ON m.categoria_id = c.id
-            left JOIN importanza i ON c.importanza_id = i.id
-            left JOIN provenienza p ON m.provenienza_id = p.id
-            left JOIN prodotto pr ON m.prodotto_id = pr.id
+            FROM movimento_magazzino m
+            LEFT JOIN tipo_movimento t ON m.tipo_movimento_id = t.id
+            LEFT JOIN categoria_movimento c ON m.categoria_movimento_id = c.id
+            LEFT JOIN livello_importanza i ON c.importanza_id = i.id
+            LEFT JOIN provenienza p ON m.provenienza_id = p.id
+            LEFT JOIN prodotto pr ON m.prodotto_id = pr.id
             """;
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
             while (rs.next()) {
-                // Costruisci gli oggetti figli
                 Tipologia tipologia = new Tipologia(
-                        rs.getInt("tipologia_id"),
-                        rs.getString("tipologia_valore")
+                        rs.getInt("tipo_movimento_id"),
+                        rs.getString("tipo_movimento_valore")
                 );
 
                 Importanza importanza = new Importanza(
-                        rs.getInt("importanza_id"),
-                        rs.getString("importanza_valore")
+                        rs.getInt("livello_importanza_id"),
+                        rs.getString("livello_importanza_valore")
                 );
 
                 Categoria categoria = new Categoria(
-                        rs.getInt("categoria_id"),
-                        rs.getString("categoria_valore"),
+                        rs.getInt("categoria_movimento_id"),
+                        rs.getString("categoria_movimento_valore"),
                         importanza
                 );
 
@@ -187,9 +107,6 @@ public class Database {
                         rs.getInt("prodotto_peso")
                 );
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-                // Ora crea il movimento completo
                 Movimento movimento = new Movimento(
                         rs.getInt("movimento_id"),
                         tipologia,
@@ -221,7 +138,6 @@ public class Database {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // Usa il costruttore con parametri
                 Prodotto prodotto = new Prodotto(rs.getInt("id"), rs.getString("valore"), rs.getInt("peso"));
                 prodotti.add(prodotto);
             }
@@ -235,14 +151,13 @@ public class Database {
     public static List<Importanza> getAllImportanze() {
         List<Importanza> importanze = new ArrayList<>();
 
-        String sql = "SELECT id, valore FROM importanza";
+        String sql = "SELECT id, valore FROM livello_importanza";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // Usa il costruttore con parametri
                 Importanza importanza = new Importanza(rs.getInt("id"), rs.getString("valore"));
                 importanze.add(importanza);
             }
@@ -256,14 +171,13 @@ public class Database {
     public static List<Tipologia> getAllTipologie() {
         List<Tipologia> tipologie = new ArrayList<>();
 
-        String sql = "SELECT id, valore FROM tipologia";
+        String sql = "SELECT id, valore FROM tipo_movimento";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // Usa il costruttore con parametri
                 Tipologia tipologia = new Tipologia(rs.getInt("id"), rs.getString("valore"));
                 tipologie.add(tipologia);
             }
@@ -277,20 +191,31 @@ public class Database {
     public static List<Categoria> getAllCategorie() {
         List<Categoria> categorie = new ArrayList<>();
 
-        String sql = "SELECT c.id, c.valore, i.id AS id_importanza, i.valore AS valore_importanza " +
-                "FROM categoria c " +
-                "left JOIN importanza i ON c.importanza_id = i.id";
+        String sql = """
+            SELECT 
+                c.id AS categoria_movimento_id, 
+                c.valore AS categoria_movimento_valore, 
+                i.id AS livello_importanza_id, 
+                i.valore AS livello_importanza_valore
+            FROM categoria_movimento c
+            LEFT JOIN livello_importanza i ON c.importanza_id = i.id
+            """;
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // Crea l'oggetto Importanza
-                Importanza importanza = new Importanza(rs.getInt("id_importanza"), rs.getString("valore_importanza"));
+                Importanza importanza = new Importanza(
+                        rs.getInt("livello_importanza_id"),
+                        rs.getString("livello_importanza_valore")
+                );
 
-                // Usa il costruttore completo per Categoria
-                Categoria categoria = new Categoria(rs.getInt("id"), rs.getString("valore"), importanza);
+                Categoria categoria = new Categoria(
+                        rs.getInt("categoria_movimento_id"),
+                        rs.getString("categoria_movimento_valore"),
+                        importanza
+                );
                 categorie.add(categoria);
             }
         } catch (SQLException e) {
@@ -310,7 +235,6 @@ public class Database {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // Usa il costruttore completo per Provenienza
                 Provenienza provenienza = new Provenienza(rs.getInt("id"), rs.getString("valore"));
                 provenienze.add(provenienza);
             }
@@ -373,7 +297,7 @@ public class Database {
                 sql.append(", ");
             }
         }
-        sql.append(" WHERE ").append("id = " + id);
+        sql.append(" WHERE id = ").append(id);
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {

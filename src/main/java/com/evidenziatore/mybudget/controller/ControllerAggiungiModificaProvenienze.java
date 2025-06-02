@@ -24,7 +24,7 @@ public class ControllerAggiungiModificaProvenienze {
 
     public void setProvenienza(Provenienza provenienza) {
         this.provenienza = provenienza;
-        buttonConferma.getStyleClass().removeLast();
+        buttonConferma.getStyleClass().remove(buttonConferma.getStyleClass().size() - 1);
         buttonConferma.getStyleClass().add("buttonDefaultBlu");
         buttonConferma.setText("Modifica");
         textFieldProvenienza.setText(provenienza.getValore());
@@ -36,9 +36,18 @@ public class ControllerAggiungiModificaProvenienze {
         buttonConferma.setText("Aggiungi");
         buttonConferma.setOnAction(event -> {
             if (provenienza != null) {
-                Database.aggiornaRecord("provenienza", new String[]{"valore"},new String[]{textFieldProvenienza.getText()}, provenienza.getId().toString());
+                Database.aggiornaRecord(
+                        "provenienza",
+                        new String[]{"valore"},
+                        new String[]{textFieldProvenienza.getText()},
+                        provenienza.getId().toString()
+                );
             } else {
-                Database.inserisciRecord("provenienza", new String[]{"valore"},new String[]{textFieldProvenienza.getText()});
+                Database.inserisciRecord(
+                        "provenienza",
+                        new String[]{"valore"},
+                        new String[]{textFieldProvenienza.getText()}
+                );
             }
             ((Stage) buttonConferma.getScene().getWindow()).close();
         });

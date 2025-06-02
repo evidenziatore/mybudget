@@ -29,7 +29,7 @@ public class ControllerAggiungiModificaCategorie {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-        buttonConferma.getStyleClass().removeLast();
+        buttonConferma.getStyleClass().remove(buttonConferma.getStyleClass().size() - 1);
         buttonConferma.getStyleClass().add("buttonDefaultBlu");
         buttonConferma.setText("Modifica");
         textFieldCategoria.setText(categoria.getValore());
@@ -47,9 +47,24 @@ public class ControllerAggiungiModificaCategorie {
         comboBoxImportanza.setItems(FXCollections.observableArrayList(Database.getAllImportanze()));
         buttonConferma.setOnAction(event -> {
             if (categoria != null) {
-                Database.aggiornaRecord("categoria", new String[]{"valore", "importanza_id"},new String[]{textFieldCategoria.getText(), comboBoxImportanza.getSelectionModel().getSelectedItem().getId().toString()}, categoria.getId().toString());
+                Database.aggiornaRecord(
+                        "categoria_movimento",
+                        new String[]{"valore", "importanza_id"},
+                        new String[]{
+                                textFieldCategoria.getText(),
+                                comboBoxImportanza.getSelectionModel().getSelectedItem().getId().toString()
+                        },
+                        categoria.getId().toString()
+                );
             } else {
-                Database.inserisciRecord("categoria", new String[]{"valore", "importanza_id"},new String[]{textFieldCategoria.getText(), comboBoxImportanza.getSelectionModel().getSelectedItem().getId().toString()});
+                Database.inserisciRecord(
+                        "categoria_movimento",
+                        new String[]{"valore", "importanza_id"},
+                        new String[]{
+                                textFieldCategoria.getText(),
+                                comboBoxImportanza.getSelectionModel().getSelectedItem().getId().toString()
+                        }
+                );
             }
             ((Stage) buttonConferma.getScene().getWindow()).close();
         });

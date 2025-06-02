@@ -38,7 +38,7 @@ public class ControllerAggiungiModificaMovimenti {
 
     public void setMovimento(Movimento movimento) {
         this.movimento = movimento;
-        buttonConferma.getStyleClass().removeLast();
+        buttonConferma.getStyleClass().remove(buttonConferma.getStyleClass().size() - 1);
         buttonConferma.getStyleClass().add("buttonDefaultBlu");
         buttonConferma.setText("Modifica");
         textFieldValore.setText(movimento.getValore().toString());
@@ -63,10 +63,8 @@ public class ControllerAggiungiModificaMovimenti {
                 comboBoxProdotto.getSelectionModel().select(prodotto);
             }
         }
-        Instant instant = movimento.getData().toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
-        LocalDate localDate = instant.atZone(zoneId).toLocalDate();
-
+        LocalDate localDate = movimento.getData().toInstant().atZone(zoneId).toLocalDate();
         datePickerData.setValue(localDate);
     }
 
@@ -88,32 +86,61 @@ public class ControllerAggiungiModificaMovimenti {
         }));
         textFieldValutazione.setTextFormatter(new TextFormatter<>(change -> {
             String newText = change.getControlNewText();
-            if (newText.matches("\\d*")) { // Solo cifre
-                return change; // Permetti il cambiamento
+            if (newText.matches("\\d*")) {
+                return change;
             } else {
-                return null; // Scarta il cambiamento
+                return null;
             }
         }));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        ZoneId defaultZoneId = ZoneId.systemDefault(); // Fuso orario di sistema
+        ZoneId defaultZoneId = ZoneId.systemDefault();
         buttonConferma.setOnAction(event -> {
+            String dataString = formatter.format(Date.from(datePickerData.getValue().atStartOfDay(defaultZoneId).toInstant()));
             if (movimento != null) {
-                Database.aggiornaRecord("movimento",
-                        new String[]{"tipologia_id", "categoria_id", "provenienza_id", "prodotto_id", "data", "valutazione", "valore"},
-                        new String[]{comboBoxTipologia.getSelectionModel().getSelectedItem().getId().toString(),
+                Database.aggiornaRecord(
+                        "movimento_magazzino",
+                        new String[]{
+                                "tipo_movimento_id",
+                                "categoria_movimento_id",
+                                "provenienza_id",
+                                "prodotto_id",
+                                "data",
+                                "valutazione",
+                                "valore"
+                        },
+                        new String[]{
+                                comboBoxTipologia.getSelectionModel().getSelectedItem().getId().toString(),
                                 comboBoxCategoria.getSelectionModel().getSelectedItem().getId().toString(),
                                 comboBoxProvenienza.getSelectionModel().getSelectedItem().getId().toString(),
                                 comboBoxProdotto.getSelectionModel().getSelectedItem().getId().toString(),
-                                formatter.format(Date.from(datePickerData.getValue().atStartOfDay(defaultZoneId).toInstant())), textFieldValutazione.getText(), textFieldValore.getText()},
-                        movimento.getId().toString());
+                                dataString,
+                                textFieldValutazione.getText(),
+                                textFieldValore.getText()
+                        },
+                        movimento.getId().toString()
+                );
             } else {
-                Database.inserisciRecord("movimento",
-                        new String[]{"tipologia_id", "categoria_id", "provenienza_id", "prodotto_id", "data", "valutazione", "valore"},
-                        new String[]{comboBoxTipologia.getSelectionModel().getSelectedItem().getId().toString(),
+                Database.inserisciRecord(
+                        "movimento_magazzino",
+                        new String[]{
+                                "tipo_movimento_id",
+                                "categoria_movimento_id",
+                                "provenienza_id",
+                                "prodotto_id",
+                                "data",
+                                "valutazione",
+                                "valore"
+                        },
+                        new String[]{
+                                comboBoxTipologia.getSelectionModel().getSelectedItem().getId().toString(),
                                 comboBoxCategoria.getSelectionModel().getSelectedItem().getId().toString(),
                                 comboBoxProvenienza.getSelectionModel().getSelectedItem().getId().toString(),
                                 comboBoxProdotto.getSelectionModel().getSelectedItem().getId().toString(),
-                                formatter.format(Date.from(datePickerData.getValue().atStartOfDay(defaultZoneId).toInstant())), textFieldValutazione.getText(), textFieldValore.getText()});
+                                dataString,
+                                textFieldValutazione.getText(),
+                                textFieldValore.getText()
+                        }
+                );
             }
             ((Stage) buttonConferma.getScene().getWindow()).close();
         });

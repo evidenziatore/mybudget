@@ -25,7 +25,7 @@ public class ControllerAggiungiModificaProdotti {
 
     public void setProdotto(Prodotto prodotto) {
         this.prodotto = prodotto;
-        buttonConferma.getStyleClass().removeLast();
+        buttonConferma.getStyleClass().remove(buttonConferma.getStyleClass().size() - 1);
         buttonConferma.getStyleClass().add("buttonDefaultBlu");
         buttonConferma.setText("Modifica");
         textFieldProdotto.setText(prodotto.getValore());
@@ -46,9 +46,24 @@ public class ControllerAggiungiModificaProdotti {
         }));
         buttonConferma.setOnAction(event -> {
             if (prodotto != null) {
-                Database.aggiornaRecord("prodotto", new String[]{"valore", "peso"},new String[]{textFieldProdotto.getText(), textFieldPeso.getText()}, prodotto.getId().toString());
+                Database.aggiornaRecord(
+                        "prodotto",
+                        new String[]{"valore", "peso"},
+                        new String[]{
+                                textFieldProdotto.getText(),
+                                textFieldPeso.getText()
+                        },
+                        prodotto.getId().toString()
+                );
             } else {
-                Database.inserisciRecord("prodotto", new String[]{"valore", "peso"},new String[]{textFieldProdotto.getText(), textFieldPeso.getText()});
+                Database.inserisciRecord(
+                        "prodotto",
+                        new String[]{"valore", "peso"},
+                        new String[]{
+                                textFieldProdotto.getText(),
+                                textFieldPeso.getText()
+                        }
+                );
             }
             ((Stage) buttonConferma.getScene().getWindow()).close();
         });
