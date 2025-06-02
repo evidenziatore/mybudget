@@ -113,7 +113,7 @@ public class ControllerMovimenti {
                 okButton.getStyleClass().add("buttonAnnullaRosso");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                    Database.eliminaRecord("movimento", cellData.getValue().getId());
+                    Database.eliminaRecord("movimento_magazzino", cellData.getValue().getId());
                     List<Movimento> movimentiList = Database.getAllMovimentiCompletamente();
                     tableViewMovimenti.getItems().setAll(movimentiList);
                 }

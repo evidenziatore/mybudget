@@ -64,7 +64,7 @@ public class ControllerCategorie {
                 okButton.getStyleClass().add("buttonAnnullaRosso");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                    Database.eliminaRecord("categoria", cellData.getValue().getId());
+                    Database.eliminaRecord("categoria_movimento", cellData.getValue().getId());
                     List<Categoria> categorie = Database.getAllCategorie();
                     tableViewCategorie.getItems().setAll(categorie);
                 }
