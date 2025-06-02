@@ -2,13 +2,14 @@ package com.evidenziatore.mybudget.controller;
 
 import com.evidenziatore.mybudget.ApplicationMyBudget;
 import com.evidenziatore.mybudget.database.Database;
-import com.evidenziatore.mybudget.database.entity.Movimento;
+import com.evidenziatore.mybudget.database.entity.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -23,12 +24,23 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ControllerMovimenti {
+
+    public TextField textFieldValore;
+    public TextField textFieldValore1;
+    public TextField textFieldValutazione;
+    public TextField textFieldValutazione1;
+    public DatePicker datePickerData;
+    public DatePicker datePickerData1;
+    public ComboBox<Provenienza> comboBoxProvenienza;
+    public ComboBox<Categoria> comboBoxCategoria;
+    public ComboBox<Tipologia> comboBoxTipologia;
+    public ComboBox<Prodotto> comboBoxProdotto;
 
     @FXML
     private TableView<Movimento> tableViewMovimenti;
@@ -69,6 +81,8 @@ public class ControllerMovimenti {
     @FXML
     private Button buttonAggiungi;
 
+    List<Movimento> movimentiList = new ArrayList<>();
+
     @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -87,6 +101,58 @@ public class ControllerMovimenti {
                     setText(formatter.format(item));
                 }
             }
+        });
+        comboBoxProvenienza.setItems(FXCollections.observableArrayList(Database.getAllProvenienze()));
+        comboBoxProvenienza.getItems().add(0, null);
+        comboBoxCategoria.setItems(FXCollections.observableArrayList(Database.getAllCategorie()));
+        comboBoxCategoria.getItems().add(0, null);
+        comboBoxTipologia.setItems(FXCollections.observableArrayList(Database.getAllTipologie()));
+        comboBoxTipologia.getItems().add(0, null);
+        comboBoxProdotto.setItems(FXCollections.observableArrayList(Database.getAllProdotti()));
+        comboBoxProdotto.getItems().add(0, null);
+        textFieldValore.setTextFormatter(new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*(\\.\\d*)?")) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        textFieldValutazione.setTextFormatter(new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        textFieldValore1.setTextFormatter(new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*(\\.\\d*)?")) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        textFieldValutazione1.setTextFormatter(new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change;
+            } else {
+                return null;
+            }
+        }));
+        textFieldValore.textProperty().addListener((obs, oldVal, newVal) -> {
+            filterAction(null);
+        });
+        textFieldValore1.textProperty().addListener((obs, oldVal, newVal) -> {
+            filterAction(null);
+        });
+        textFieldValutazione.textProperty().addListener((obs, oldVal, newVal) -> {
+            filterAction(null);
+        });
+        textFieldValutazione1.textProperty().addListener((obs, oldVal, newVal) -> {
+            filterAction(null);
         });
         colValore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getValore()));
         colValutazione.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getValutazione()));
@@ -114,8 +180,8 @@ public class ControllerMovimenti {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     Database.eliminaRecord("movimento_magazzino", cellData.getValue().getId());
-                    List<Movimento> movimentiList = Database.getAllMovimentiCompletamente();
-                    tableViewMovimenti.getItems().setAll(movimentiList);
+                    movimentiList = Database.getAllMovimentiCompletamente();
+                    filter();
                 }
             });
             buttonModifica.setOnAction(event -> {
@@ -138,8 +204,8 @@ public class ControllerMovimenti {
                 stage.setScene(scene);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
-                List<Movimento> movimentiList = Database.getAllMovimentiCompletamente();
-                tableViewMovimenti.getItems().setAll(movimentiList);
+                movimentiList = Database.getAllMovimentiCompletamente();
+                filter();
             });
                 HBox hBoxAzioni = new HBox(buttonModifica,buttonElimina);
                 hBoxAzioni.setSpacing(5);
@@ -162,8 +228,8 @@ public class ControllerMovimenti {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-            List<Movimento> movimentiList = Database.getAllMovimentiCompletamente();
-            tableViewMovimenti.getItems().setAll(movimentiList);
+            movimentiList = Database.getAllMovimentiCompletamente();
+            filter();
         });
         double totalWidth = colId.getPrefWidth()
                 + colData.getPrefWidth()
@@ -180,8 +246,112 @@ public class ControllerMovimenti {
 
         tableViewMovimenti.setMaxWidth(totalWidth);
 
-        ObservableList<Movimento> movimentiList = FXCollections.observableArrayList(Database.getAllMovimentiCompletamente());
-        tableViewMovimenti.setItems(movimentiList);
-
+        movimentiList = Database.getAllMovimentiCompletamente();
+        filter();
     }
+
+    public void filterAction(ActionEvent actionEvent) {
+        filter();
+    }
+
+    private void filter() {
+        String valoreText = textFieldValore.getText().trim();
+        String valutazioneText = textFieldValutazione.getText().trim();
+        String valoreText1 = textFieldValore1.getText().trim();
+        String valutazioneText1 = textFieldValutazione1.getText().trim();
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        Date dataInput = datePickerData.getValue() != null ? Date.from(datePickerData.getValue().atStartOfDay(defaultZoneId).toInstant()) : null;
+        Date dataInput1 = datePickerData1.getValue() != null ? Date.from(datePickerData1.getValue().atStartOfDay(defaultZoneId).toInstant()) : null;
+        Provenienza selProvenienza = comboBoxProvenienza.getValue();
+        Categoria selCategoria = comboBoxCategoria.getValue();
+        Tipologia selTipologia = comboBoxTipologia.getValue();
+        Prodotto selProdotto = comboBoxProdotto.getValue();
+
+        List<Movimento> filteredMovimenti = movimentiList.stream().filter(m -> {
+            if (!valoreText.isEmpty()) {
+                try {
+                    double valoreFiltro = Double.parseDouble(valoreText);
+                    if (m.getValore()<valoreFiltro) {
+                        return false;
+                    }
+                } catch (NumberFormatException ex) {
+                    return false;
+                }
+            }
+
+            if (!valutazioneText.isEmpty()) {
+                try {
+                    double valutazioneFiltro = Double.parseDouble(valutazioneText);
+                    if (m.getValutazione()<valutazioneFiltro) {
+                        return false;
+                    }
+                } catch (NumberFormatException ex) {
+                    return false;
+                }
+            }
+
+            if (!valoreText1.isEmpty()) {
+                try {
+                    double valoreFiltro = Double.parseDouble(valoreText1);
+                    if (m.getValore()>valoreFiltro) {
+                        return false;
+                    }
+                } catch (NumberFormatException ex) {
+                    return false;
+                }
+            }
+
+            if (!valutazioneText1.isEmpty()) {
+                try {
+                    double valutazioneFiltro = Double.parseDouble(valutazioneText1);
+                    if (m.getValutazione()>valutazioneFiltro) {
+                        return false;
+                    }
+                } catch (NumberFormatException ex) {
+                    return false;
+                }
+            }
+
+            if (dataInput != null) {
+                if (dataInput.after(m.getData())) {
+                    return false;
+                }
+            }
+
+            if (dataInput1 != null) {
+                if (dataInput1.before(m.getData())) {
+                    return false;
+                }
+            }
+
+            if (selProvenienza != null) {
+                if (!selProvenienza.getId().equals(m.getProvenienza().getId())) {
+                    return false;
+                }
+            }
+
+            if (selCategoria != null) {
+                if (!selCategoria.getId().equals(m.getCategoria().getId())) {
+                    return false;
+                }
+            }
+
+            if (selTipologia != null) {
+                if (!selTipologia.getId().equals(m.getTipologia().getId())) {
+                    return false;
+                }
+            }
+
+            if (selProdotto != null) {
+                if (!selProdotto.getId().equals(m.getProdotto().getId())) {
+                    return false;
+                }
+            }
+
+            return true;
+        }).collect(Collectors.toList());
+
+        tableViewMovimenti.getItems().setAll(filteredMovimenti);
+    }
+
 }

@@ -2,9 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -12,11 +15,82 @@
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
-    <HBox style="-fx-background-color: white;">
-        <children>
-            <Label text="TODO filtri" />
-        </children>
-    </HBox>
+   <VBox spacing="5.0">
+      <children>
+         <Label styleClass="labelPiccolaGrossettoNera" text="Filtri" />
+          <HBox spacing="5.0" style="-fx-background-color: white;">
+            <children>
+               <VBox>
+                  <children>
+                     <Label text="Prodotto" />
+                     <ComboBox fx:id="comboBoxProdotto" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Tipologia" />
+                     <ComboBox fx:id="comboBoxTipologia" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Categoria" />
+                     <ComboBox fx:id="comboBoxCategoria" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Provenienza" />
+                     <ComboBox fx:id="comboBoxProvenienza" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Data Da" />
+                     <DatePicker fx:id="datePickerData" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Data A" />
+                     <DatePicker fx:id="datePickerData1" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+            </children>
+          </HBox>
+         <HBox spacing="5.0" style="-fx-background-color: white;">
+            <children>
+               <VBox>
+                  <children>
+                     <Label text="Valutazione Da" />
+                     <TextField fx:id="textFieldValutazione" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Valutazione A" />
+                     <TextField fx:id="textFieldValutazione1" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Soldi Da" />
+                     <TextField fx:id="textFieldValore" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+               <VBox>
+                  <children>
+                     <Label text="Soldi A" />
+                     <TextField fx:id="textFieldValore1" minWidth="200.0" onAction="#filterAction" />
+                  </children>
+               </VBox>
+            </children>
+            <VBox.margin>
+               <Insets top="-5.0" />
+            </VBox.margin>
+         </HBox>
+      </children>
+   </VBox>
    <Label styleClass="labelPiccolaGrossettoNera" text="In questa sezione potrai gestire tutti i tuoi movimenti bancari attraverso le apposite funzionalita'" />
 
     <TableView fx:id="tableViewMovimenti" prefHeight="1000.0">
