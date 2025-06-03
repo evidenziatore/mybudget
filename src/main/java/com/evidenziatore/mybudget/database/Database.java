@@ -4,6 +4,8 @@ import com.evidenziatore.mybudget.database.entity.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.*;
@@ -30,7 +32,11 @@ public class Database {
             }
 
             try (Connection conn = connect()) {
-                String sql = Files.readString(Path.of("src/main/resources/init.sql"));
+                InputStream in = Database.class.getResourceAsStream("/init.sql");
+                if (in == null) {
+                    throw new IOException("init.sql non trovato nelle risorse!");
+                }
+                String sql = new String(in.readAllBytes(), StandardCharsets.UTF_8);
                 try (Statement stmt = conn.createStatement()) {
                     for (String statement : sql.split(";")) {
                         String trimmed = statement.trim();
